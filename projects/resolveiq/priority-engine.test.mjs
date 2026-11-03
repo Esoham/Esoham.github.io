@@ -1,0 +1,11 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {prioritize,prioritizeQueue} from './priority-engine.mjs';
+const base={id:'RI-1',ageDays:1,impactedCount:1,blocked:false,category:'General'};
+test('normal question has normal priority',()=>assert.equal(prioritize(base).priority,'Normal'));
+test('blocked case is high priority',()=>assert.equal(prioritize({...base,blocked:true}).priority,'High'));
+test('blocked widespread issue is urgent',()=>assert.equal(prioritize({...base,blocked:true,impactedCount:5}).priority,'Urgent'));
+test('five day waiting adds 25 points',()=>assert.equal(prioritize({...base,ageDays:5}).score,25));
+test('explanations are visible',()=>assert.ok(prioritize({...base,blocked:true}).reasons.includes('Customer workflow blocked')));
+test('priority queue sorted descending',()=>assert.deepEqual(prioritizeQueue([{...base,id:'low'},{...base,id:'high',blocked:true}]).map(x=>x.id),['high','low']));
+test('invalid input rejected',()=>assert.throws(()=>prioritize({...base,ageDays:-1}),TypeError));
