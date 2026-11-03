@@ -1,5 +1,9 @@
 # ResolveIQ — Product case study (in progress)
 
+**Product owner:** Esoham Abalo  
+**Role:** Product strategy, requirements, prioritization, prototype development and QA planning  
+**Evidence status:** Prototype published; full browser QA and user validation pending
+
 ## Product problem
 Small support teams often lack a consistent way to prioritize cases by severity, breadth of impact, and time waiting. **This is a product hypothesis**, not a finding from completed interviews.
 
