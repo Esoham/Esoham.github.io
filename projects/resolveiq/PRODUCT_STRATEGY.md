@@ -1,5 +1,7 @@
 # ResolveIQ — Product strategy and delivery plan
 
+**Product owner:** Esoham Abalo
+
 ## Vision
 Help small support teams resolve the most consequential cases first, using understandable prioritization and clear ownership.
 
