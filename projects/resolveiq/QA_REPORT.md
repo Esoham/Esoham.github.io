@@ -1,7 +1,10 @@
 # ResolveIQ — QA evidence log
 
+**Product owner:** Esoham Abalo  
+**Release:** v0.2 — QA in progress
+
 ## 2026-11-03: Initial manual smoke test
-**Reporter:** Product owner (self-reported through ChatGPT conversation).  
+**Evidence source:** Product-owner-reported smoke test.  
 **Environment:** Public GitHub Pages demo; browser/version not recorded.  
 **Result:** Product owner confirmed that the application loads and allows interaction with records.  
 **Scope:** Basic smoke test only; individual scenarios remain unverified.
