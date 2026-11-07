@@ -1,4 +1,4 @@
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts } from "./live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts } from "./live-utils.mjs";
 
 const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
@@ -53,6 +53,51 @@ try{
   const fromStorage=JSON.parse(localStorage.getItem(SAVED_KEY)||"[]");
   if(Array.isArray(fromStorage))savedIds=new Set(fromStorage.filter(id=>typeof id==="string").slice(0,300));
 }catch{}
+let realComparison=[];
+const realCompareStatus=document.querySelector("#real-compare-status");
+const realCompareWrap=document.querySelector("#real-compare-wrap");
+const realCompareHead=document.querySelector("#real-compare-head");
+const realCompareBody=document.querySelector("#real-compare-body");
+const realCompareClear=document.querySelector("#real-compare-clear");
+function renderRealComparison(notice=""){
+ const selected=compareRentalFacts(providerItems,realComparison);
+ realCompareHead.replaceChildren();realCompareBody.replaceChildren();
+ realCompareWrap.hidden=selected.length===0;
+ realCompareClear.hidden=selected.length===0;
+ realCompareStatus.textContent=notice||(selected.length===0?
+  "Choose “Compare” on any real rental card above to start comparing.":
+  selected.length+" of 3 real rentals selected. Prices are provider-reported; availability and fees are not verified.");
+ if(!selected.length)return;
+ const head=dom("tr");
+ const title=dom("th","","Compare");title.scope="col";head.append(title);
+ for(const item of selected){const th=dom("th","",item.address);th.scope="col";head.append(th);}
+ realCompareHead.append(head);
+ const lines=[
+  ["Listed rent",item=>usd(item.rent)+" / month"],
+  ["City",item=>item.city+", GA"],
+  ["ZIP code",item=>item.zip||"Not provided"],
+  ["Bedrooms",item=>item.beds===null?"Not provided":String(item.beds)],
+  ["Bathrooms",item=>item.baths===null?"Not provided":String(item.baths)],
+  ["Area",item=>item.sqft?Number(item.sqft).toLocaleString("en-US")+" sq ft":"Not provided"],
+  ["Property type",item=>item.propertyType||"Not provided"],
+  ["Last reported active",item=>new Date(item.lastSeenDate).toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"})],
+  ["Deposit / extra fees",()=> "Not provided — ask leasing office"],
+  ["Entire-unit status",item=>hasAmbiguousRentalScope(item)?"Check: possible room rental":"Not independently verified"]
+ ];
+ for(const [label,value] of lines){
+  const tr=dom("tr");const th=dom("th","",label);th.scope="row";tr.append(th);
+  for(const item of selected)tr.append(dom("td","",value(item)));
+  realCompareBody.append(tr);
+ }
+ const actionRow=dom("tr");const actionHeading=dom("th","","Next step");actionHeading.scope="row";actionRow.append(actionHeading);
+ for(const item of selected){
+  const td=dom("td");const btn=dom("button","compare-button","View details");
+  btn.type="button";btn.addEventListener("click",()=>openRentalDetails(item));
+  td.append(btn);actionRow.append(td);
+ }
+ realCompareBody.append(actionRow);
+}
+realCompareClear.addEventListener("click",()=>{realComparison=[];render();});
 let visibleCount=12;
 const savedOnlyEl=document.querySelector("#market-saved-only");
 const sortEl=document.querySelector("#market-sort");
@@ -160,6 +205,16 @@ function listingCard(item) {
   const detailsButton=dom("button","market-primary-action","View full details");
   detailsButton.type="button";detailsButton.addEventListener("click",()=>openRentalDetails(item));
   actions.append(detailsButton);
+  const compare=dom("button","market-secondary-button",realComparison.includes(item.id)?"✓ Added to compare":"+ Compare");
+  compare.type="button";compare.setAttribute("aria-pressed",String(realComparison.includes(item.id)));
+  compare.setAttribute("aria-label",(realComparison.includes(item.id)?"Remove from comparison: ":"Add to comparison: ")+item.address);
+  compare.addEventListener("click",()=>{
+    const result=toggleRentalComparison(realComparison,item.id);
+    realComparison=result.ids;
+    render(result.limited?"You can compare up to three rentals. Remove one before adding another.":"");
+    document.querySelector("#real-compare").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  actions.append(compare);
   const plan=dom("button","market-secondary-button","Calculate my costs");
   plan.type="button";
   plan.addEventListener("click",()=>{
@@ -193,8 +248,9 @@ function listingCard(item) {
   return card;
 }
 
-function render() {
+function render(notice="") {
   grid.replaceChildren();
+  renderRealComparison(notice);
   if(!providerReady){countEl.textContent="";return;}
   let filtered=filterProviderListings(providerItems,{
     city:cityEl.value,zip:zipEl.value,propertyType:typeEl.value,
