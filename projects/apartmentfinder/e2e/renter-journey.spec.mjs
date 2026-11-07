@@ -109,3 +109,20 @@ test("full cost-of-living planner updates with transportation and groceries",asy
  await expect(page.locator("#budget-results")).toContainText("$950");
  await expect(page.locator("#budget-results")).toContainText("cash-flow estimate");
 });
+
+test("uncertain rental scope is visibly disclosed without claiming fraud",async ({page})=>{
+ const now=new Date().toISOString();
+ await page.route("**/data/live-listings.json",route=>route.fulfill({
+  status:200,contentType:"application/json",
+  body:JSON.stringify({provider:"RentCast",status:"ready",retrievedAt:now,items:[{
+   id:"ambiguous",address:"100 Example Rd, Atlanta, GA",city:"Atlanta",state:"GA",zip:"30312",
+   rent:625,beds:1,baths:1,sqft:1800,propertyType:"Single Family",status:"Active",
+   lastSeenDate:now,officeName:"",officeWebsite:null
+  }]})
+ }));
+ await page.reload();
+ const card=page.locator("#market-grid .market-card").first();
+ await expect(card).toContainText("Rental scope unverified");
+ await expect(card).toContainText("Direct listing contact not provided");
+ await expect(card).not.toContainText("verified entire unit");
+});
