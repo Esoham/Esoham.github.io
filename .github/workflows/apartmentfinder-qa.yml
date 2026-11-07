@@ -31,6 +31,15 @@ jobs:
           node --check projects/apartmentfinder/logic.mjs
       - name: Run client regression tests
         run: node --test projects/apartmentfinder/tests/*.test.mjs
+      - name: Generate non-verification rental quality report
+        run: node projects/apartmentfinder/scripts/audit-listings.mjs
+      - name: Upload rental review queue
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apartmentfinder-listing-review-queue
+          path: projects/apartmentfinder/listing-quality-report.md
+          if-no-files-found: ignore
 
   browser-e2e:
     runs-on: ubuntu-latest
