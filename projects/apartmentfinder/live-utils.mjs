@@ -35,8 +35,12 @@ export function filterProviderListings(items, filters = {}) {
   const maxRent = rentInput && Number.isFinite(Number(rentInput)) && Number(rentInput) >= 0
     ? Number(rentInput) : null;
   const minBeds = Math.max(0, Number(filters.minBeds) || 0);
+  const zip = String(filters.zip ?? "").trim();
+  const propertyType = String(filters.propertyType ?? "").trim().toLocaleLowerCase("en-US");
   return items.filter(item =>
     (!city || item.city.toLocaleLowerCase("en-US") === city) &&
+    (!zip || String(item.zip ?? "").trim() === zip) &&
+    (!propertyType || String(item.propertyType ?? "").toLocaleLowerCase("en-US") === propertyType) &&
     (maxRent === null || item.rent <= maxRent) &&
     (minBeds === 0 || (Number.isFinite(item.beds) && item.beds >= minBeds))
   ).sort((a,b) => a.rent - b.rent || a.id.localeCompare(b.id));
@@ -48,4 +52,10 @@ export function trustedOfficeUrl(value) {
     const parsed = new URL(value);
     return parsed.protocol === "https:" && !parsed.username && !parsed.password ? parsed.href : null;
   } catch { return null; }
+}
+
+/** Flag listings that may represent a room or incomplete whole-home information. */
+export function hasAmbiguousRentalScope(item) {
+  const type = String(item?.propertyType ?? "").toLocaleLowerCase("en-US");
+  return (type === "single family" || type === "single-family") && item?.beds === 1;
 }
