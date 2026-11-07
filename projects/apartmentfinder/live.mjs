@@ -227,8 +227,6 @@ function listingCard(item) {
   ];
   for(const value of factValues.filter(Boolean))facts.append(dom("span","market-fact",value));
   body.append(facts);
-  if(hasAmbiguousRentalScope(item))
-    body.append(dom("p","market-warning","⚠ Rental scope needs checking: one-bedroom single-family record could refer to a room, not the whole home."));
   const flags=rentalReviewFlags(item);
   if(flags.includes("scope-unverified"))
     body.append(dom("p","market-warning","Rental scope unverified: this may be a room or shared accommodation, not an entire home."));
