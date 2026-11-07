@@ -1,4 +1,4 @@
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope } from "./live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts } from "./live-utils.mjs";
 
 const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
@@ -22,6 +22,30 @@ function dom(tag, className, value) {
 function usd(value) {
   return new Intl.NumberFormat("en-US", { style:"currency", currency:"USD", maximumFractionDigits:0 }).format(value);
 }
+
+
+const costFields=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront"];
+const costInput=name=>document.querySelector("#budget-"+name);
+const costResult=document.querySelector("#budget-results");
+function updateCostPlanner(){
+  const vals=Object.fromEntries(costFields.map(key=>[key,costInput(key).value]));
+  const result=estimateRenterCosts(vals);
+  if(!result.valid){costResult.textContent=result.error;return;}
+  const rows=[
+    ["Monthly housing estimate",usd(result.monthly)],
+    ["Entered move-in total",usd(result.upfront)],
+    ["Rent / take-home income",result.rentPercent===null?"Enter income":result.rentPercent.toFixed(1)+"%"],
+    ["Remaining after housing",result.remaining===null?"Enter income":usd(result.remaining)]
+  ];
+  costResult.replaceChildren(...rows.map(([label,value])=>{
+    const cell=dom("div","budget-result");
+    cell.append(dom("span","",label),dom("strong","",value));
+    return cell;
+  }));
+}
+costFields.forEach(key=>costInput(key).addEventListener("input",updateCostPlanner));
+document.querySelector("#budget-form").addEventListener("submit",event=>event.preventDefault());
+updateCostPlanner();
 
 function listingCard(item) {
   const card = dom("article","listing-card");
@@ -51,6 +75,15 @@ function listingCard(item) {
     link.rel = "noopener noreferrer";
     body.append(link);
   }
+  const plan=dom("button","compare-button","Plan costs for this rental");
+  plan.type="button";
+  plan.addEventListener("click",()=>{
+    costInput("rent").value=item.rent;
+    document.querySelector("#budget-selected").textContent="Planning for "+item.address+". Check all other fees with the leasing office.";
+    updateCostPlanner();
+    document.querySelector("#renter-budget").scrollIntoView({behavior:"smooth",block:"start"});
+  });
+  body.append(plan);
   card.append(art,body);
   return card;
 }
