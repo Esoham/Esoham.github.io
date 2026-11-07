@@ -1,0 +1,9 @@
+{
+  "provider": "RentCast",
+  "status": "not_configured",
+  "retrievedAt": null,
+  "lastSeenMaxAgeDays": 14,
+  "queryCities": ["Atlanta", "College Park", "East Point", "Hapeville", "Union City"],
+  "notice": "Authorized provider feed is not active. No real rental results are shown. Use the independent listing-marketplace links above while setup is pending.",
+  "items": []
+}

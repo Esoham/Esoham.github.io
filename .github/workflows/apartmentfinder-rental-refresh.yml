@@ -1,0 +1,56 @@
+name: Refresh authorized RentCast rental listings
+on:
+  schedule:
+    # 5 requests per run, roughly 20–25 per calendar month before manual runs.
+    - cron: '17 12 * * 0'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: apartmentfinder-rentcast-snapshot
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.repository == 'Esoham/Esoham.github.io'
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test provider adapter without network access
+        run: python -m unittest discover -s scripts -p 'test_sync_rentcast.py' -v
+      - name: Detect configured API secret
+        id: keycheck
+        env:
+          RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+        run: |
+          if [ -n "$RENTCAST_API_KEY" ]; then
+            echo 'enabled=yes' >> "$GITHUB_OUTPUT"
+          else
+            echo 'enabled=no' >> "$GITHUB_OUTPUT"
+            echo '::notice::Add RENTCAST_API_KEY repository Actions secret to activate rentals. No API call made.'
+          fi
+      - name: Fetch and sanitize active rental records
+        if: steps.keycheck.outputs.enabled == 'yes'
+        env:
+          RENTCAST_API_KEY: ${{ secrets.RENTCAST_API_KEY }}
+        run: python scripts/sync_rentcast.py
+      - name: Commit sanitized data snapshot if changed
+        if: steps.keycheck.outputs.enabled == 'yes'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add projects/apartmentfinder/data/live-listings.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'data: refresh provider-reported metro Atlanta rental listings'
+            git push
+          else
+            echo 'No new normalized rental data to publish.'
+          fi
