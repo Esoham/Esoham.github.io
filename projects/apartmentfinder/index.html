@@ -7,6 +7,7 @@
   <title>ApartmentFinder — Budget-first apartment discovery</title>
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
+  <script type="module" src="./live.mjs"></script>
 </head>
 <body>
   <a class="skip-link" href="#search">Skip to apartment search</a>
@@ -14,7 +15,7 @@
     <div class="topbar-inner">
       <a class="brand" href="#top" aria-label="ApartmentFinder homepage"><span class="brand-icon" aria-hidden="true">⌂</span><span>Apartment<span class="brand-emphasis">Finder</span></span></a>
       <nav aria-label="Primary navigation">
-        <a href="#search">Explore homes</a><a href="#compare">Compare</a><a href="#methodology">How it works</a>
+        <a href="#market-search">Actual rentals</a><a href="#search">Sample demo</a><a href="#compare">Compare</a>
       </nav>
       <span class="topbar-label">Portfolio prototype</span>
     </div>
@@ -27,8 +28,8 @@
           <span class="eyebrow">A smarter way to search</span>
           <h1 id="hero-title">Find your next place.<br><span>Know the full cost.</span></h1>
           <p>Search by budget, compare neighborhoods, and estimate how much you'll need before moving in. Made for renters who want clarity, not surprises.</p>
-          <a class="primary-link" href="#search">Explore sample apartments <span aria-hidden="true">↗</span></a>
-          <p class="disclosure"><strong>Demo only:</strong> Every listing and price on this page is fictional. This is not a live rental service or an offer to rent.</p>
+          <a class="primary-link" href="#market-search">Explore rental search <span aria-hidden="true">↗</span></a>
+          <p class="disclosure"><strong>Data transparency:</strong> Sample apartment cards are fictional. A separate provider-sourced rental section appears below only when an authorized feed is connected; availability and fees must be confirmed directly.</p>
         </div>
         <div class="hero-graphic" aria-hidden="true">
           <div class="building building-back"><div class="windows"></div></div>
@@ -37,6 +38,36 @@
           <div class="sun"></div>
         </div>
       </div>
+    </section>
+
+    <section class="search-shell market-shell" id="market-search" aria-labelledby="market-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Real rental research</span><h2 id="market-title">Explore rental listings</h2></div>
+        <p>Start with verified rental marketplaces. Our licensed data feed shows provider-reported active listings only after an authorized connection is configured.</p>
+      </div>
+      <div class="market-info">
+        <strong>Browse rentals at the original source</strong>
+        <p>These links open independently operated rental marketplaces. Check current unit availability, all fees and lease terms with the property directly.</p>
+        <div class="market-links">
+          <a href="https://www.apartments.com/college-park-ga/" target="_blank" rel="noopener noreferrer">College Park rentals on Apartments.com ↗</a>
+          <a href="https://www.apartments.com/atlanta-ga/" target="_blank" rel="noopener noreferrer">Atlanta rentals on Apartments.com ↗</a>
+        </div>
+      </div>
+      <div class="market-header">
+        <h3>Authorized rental-data feed <span class="market-provider">RentCast</span></h3>
+        <p id="market-status" class="market-status" role="status" aria-live="polite">Checking whether a rental feed is connected…</p>
+      </div>
+      <form id="market-filters" class="market-filters" aria-label="Provider rental listing filters">
+        <div class="field"><label for="market-city">City</label>
+          <select id="market-city"><option value="">All covered cities</option></select></div>
+        <div class="field"><label for="market-max-rent">Maximum listed rent</label>
+          <input id="market-max-rent" type="number" min="0" max="10000" step="25" value="1200"></div>
+        <div class="field"><label for="market-bedrooms">Minimum bedrooms</label>
+          <select id="market-bedrooms"><option value="0">Any / unknown</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
+      </form>
+      <p id="market-results" class="small" aria-live="polite"></p>
+      <div id="market-grid" class="listing-grid" aria-label="Provider-reported rentals"></div>
+      <p class="fine-print">A provider's “Active” status is not proof an individual apartment is still available. The source may omit application fees, deposits, utilities and pet rules, so ApartmentFinder never guesses those costs for provider listings. Refreshes are periodic, not real-time.</p>
     </section>
 
     <section class="search-shell" id="search" aria-labelledby="search-title">
@@ -113,7 +144,7 @@
         <article><span class="method-number">02</span><h3>Estimated monthly total</h3><p>Rent + sample utilities estimate + optional parking. Pet rent is added when you choose a pet-friendly unit with a pet-rent amount.</p></article>
         <article><span class="method-number">03</span><h3>Estimated move-in cost</h3><p>First month's rent + sample security deposit + application fee + administrative fee. It excludes taxes, pet deposits, insurance, prorating, and other possible charges.</p></article>
       </div>
-      <p class="fine-print">This project demonstrates product search, client-side filtering, favorites, comparison and transparent calculations. Listings are synthetic, stored in source code, and do not represent currently available apartments. No inquiries, applications or payments can be submitted.</p>
+      <p class="fine-print">The cost comparison below applies only to fictional sample homes with known sample fees. Provider-sourced listings are separate, and no missing real-world fees are inferred. This application does not accept rental applications or payments.</p>
     </section>
   </main>
   <footer><span><strong>ApartmentFinder</strong> · Independent product prototype</span><a href="https://github.com/Esoham/ApartmentFinder" rel="noopener noreferrer">View source on GitHub</a></footer>

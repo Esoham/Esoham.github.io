@@ -5,6 +5,9 @@ on:
       - 'projects/apartmentfinder/**'
       - '.github/workflows/apartmentfinder-demo-tests.yml'
       - 'index.html'
+      - 'scripts/sync_rentcast.py'
+      - 'scripts/test_sync_rentcast.py'
+      - '.github/workflows/apartmentfinder-rental-refresh.yml'
   pull_request:
     paths:
       - 'projects/apartmentfinder/**'
@@ -23,21 +26,29 @@ jobs:
         with:
           node-version: '22'
       - name: Run affordability and filtering tests
-        run: node --test projects/apartmentfinder/tests/logic.test.mjs
+        run: node --test projects/apartmentfinder/tests/*.test.mjs
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test RentCast ingest without API calls
+        run: python -m unittest discover -s scripts -p 'test_sync_rentcast.py' -v
       - name: Check frontend syntax and static resource links
         run: |
           node --check projects/apartmentfinder/app.mjs
           node --check projects/apartmentfinder/logic.mjs
           node --check projects/apartmentfinder/listings.mjs
+          node --check projects/apartmentfinder/live.mjs
+          node --check projects/apartmentfinder/live-utils.mjs
           node --input-type=module <<'NODE'
           import fs from 'node:fs';
           const dir = 'projects/apartmentfinder';
           const page = fs.readFileSync(dir + '/index.html', 'utf8');
-          for (const asset of ['app.mjs', 'listings.mjs', 'logic.mjs', 'styles.css']) {
+          for (const asset of ['app.mjs', 'listings.mjs', 'logic.mjs', 'live.mjs', 'live-utils.mjs', 'data/live-listings.json', 'styles.css']) {
             if (!fs.existsSync(dir + '/' + asset)) throw new Error('Missing ' + asset);
           }
           if (!page.includes('src="./app.mjs"')) throw new Error('Frontend entrypoint missing');
-          if (!page.includes('Every listing and price on this page is fictional')) throw new Error('Demo disclosure missing');
+          if (!page.includes('Sample apartment cards are fictional')) throw new Error('Demo disclosure missing');
+          if (!page.includes('provider-sourced rental section') || !page.includes('src="./live.mjs"')) throw new Error('Provider listing separation missing');
           const home = fs.readFileSync('index.html', 'utf8');
           if (!home.includes('href="projects/apartmentfinder/"')) throw new Error('Portfolio link missing');
           NODE
