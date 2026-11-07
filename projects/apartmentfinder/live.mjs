@@ -1,4 +1,4 @@
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl } from "./live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope } from "./live-utils.mjs";
 
 const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
@@ -6,6 +6,8 @@ const countEl = document.querySelector("#market-results");
 const cityEl = document.querySelector("#market-city");
 const maxRentEl = document.querySelector("#market-max-rent");
 const bedroomsEl = document.querySelector("#market-bedrooms");
+const zipEl = document.querySelector("#market-zip");
+const typeEl = document.querySelector("#market-property-type");
 const form = document.querySelector("#market-filters");
 let providerItems = [];
 let providerReady = false;
@@ -33,6 +35,10 @@ function listingCard(item) {
     (item.sqft ? " · " + item.sqft + " sq ft" : "")));
   const price = dom("p", "price-market", usd(item.rent) + " / month listed rent");
   body.append(price);
+  if (hasAmbiguousRentalScope(item)) {
+    body.append(dom("p", "small", "Check rental scope: this single-family record reports one bedroom. The price may be for a room or partial property; confirm what is included."));
+  }
+  if (item.propertyType) body.append(dom("p","small","Provider property type: " + item.propertyType));
   const lastSeenDate = new Date(item.lastSeenDate);
   body.append(dom("p", "small", "Provider last saw listing active: " + lastSeenDate.toLocaleDateString("en-US", {year:"numeric",month:"short",day:"numeric", timeZone:"UTC"})));
   body.append(dom("p", "small", "Deposits, application fees, utilities, pet restrictions and unit availability: not verified."));
@@ -54,6 +60,8 @@ function render() {
   if (!providerReady) { countEl.textContent = ""; return; }
   const filtered = filterProviderListings(providerItems,{
     city: cityEl.value,
+    zip: zipEl.value,
+    propertyType: typeEl.value,
     maxRent: maxRentEl.value,
     minBeds: bedroomsEl.value
   });
@@ -62,8 +70,9 @@ function render() {
   if (!filtered.length) grid.append(dom("p","empty-state","No provider listings match this budget. Try increasing the maximum rent or changing the city."));
 }
 
-for (const select of [cityEl,bedroomsEl]) select.addEventListener("change", render);
+for (const select of [cityEl,bedroomsEl,typeEl]) select.addEventListener("change", render);
 maxRentEl.addEventListener("input",render);
+zipEl.addEventListener("input",render);
 form.addEventListener("submit", event=>event.preventDefault());
 
 async function load() {
@@ -95,6 +104,11 @@ async function load() {
       const option = dom("option","",city);
       option.value = city;
       cityEl.append(option);
+    }
+    for (const type of [...new Set(providerItems.map(x=>x.propertyType).filter(Boolean))].sort()) {
+      const option = dom("option","",type);
+      option.value = type;
+      typeEl.append(option);
     }
     render();
   } catch {
