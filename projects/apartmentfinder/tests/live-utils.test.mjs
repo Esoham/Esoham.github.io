@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl } from "../live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope } from "../live-utils.mjs";
 const NOW = new Date("2026-11-07T13:00:00Z");
 const ITEM = {id:"a",address:"Test Address, Atlanta, GA",city:"Atlanta",state:"GA",rent:1000,beds:1,baths:1,
  lastSeenDate:"2026-11-06T12:00:00Z",status:"Active",officeWebsite:"https://example.com"};
@@ -41,4 +41,16 @@ test("unsafe office links rejected",()=>{
 test("malformed snapshot rejected",()=>{
  assert.equal(validateSnapshot({},NOW).state,"invalid");
  assert.equal(validateSnapshot(null,NOW).state,"invalid");
+});
+
+test("ZIP and property type filters narrow provider results",()=>{
+ const items=[{...ITEM,zip:"30337",propertyType:"Apartment"}, {...ITEM,id:"b",zip:"30349",propertyType:"Single Family"}];
+ assert.deepEqual(filterProviderListings(items,{zip:"30337"}).map(x=>x.id),["a"]);
+ assert.deepEqual(filterProviderListings(items,{propertyType:"single family"}).map(x=>x.id),["b"]);
+ assert.deepEqual(filterProviderListings(items,{zip:"30337",propertyType:"Single Family"}),[]);
+});
+test("single-family one-bedroom listings carry ambiguity warning",()=>{
+ assert.equal(hasAmbiguousRentalScope({propertyType:"Single Family",beds:1}),true);
+ assert.equal(hasAmbiguousRentalScope({propertyType:"Apartment",beds:1}),false);
+ assert.equal(hasAmbiguousRentalScope({propertyType:"Single Family",beds:3}),false);
 });
