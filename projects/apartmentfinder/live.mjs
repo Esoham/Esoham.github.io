@@ -63,6 +63,68 @@ function saveListing(id){
   try{localStorage.setItem(SAVED_KEY,JSON.stringify([...savedIds]));}catch{}
   render();
 }
+
+const detailDialog=document.querySelector("#rental-detail-dialog");
+const detailContent=document.querySelector("#rental-detail-content");
+document.querySelector("#rental-detail-close").addEventListener("click",()=>detailDialog.close());
+detailDialog.addEventListener("click",event=>{if(event.target===detailDialog)detailDialog.close();});
+function makeFact(label,value){
+ const wrapper=dom("div","detail-fact");
+ wrapper.append(dom("span","",label),dom("strong","",value));
+ return wrapper;
+}
+function openRentalDetails(item){
+ detailContent.replaceChildren();
+ const title=dom("h2","",item.address);
+ title.id="rental-detail-title";
+ detailContent.append(dom("p","eyebrow","ApartmentFinder · Provider-reported listing"),title);
+ detailContent.append(dom("p","detail-price",usd(item.rent)+" per month · advertised rent only"));
+ detailContent.append(dom("p","market-disclosure",
+   "Reported active by RentCast. This is not a verified offer, application or lease. Confirm details directly with a property representative."));
+ const facts=dom("div","detail-facts");
+ const listingFacts=[
+  ["City",item.city+", GA "+(item.zip||"")],
+  ["Bedrooms",item.beds===null?"Not provided":item.beds===0?"Studio":String(item.beds)],
+  ["Bathrooms",item.baths===null?"Not provided":String(item.baths)],
+  ["Size",item.sqft?Number(item.sqft).toLocaleString("en-US")+" sq ft":"Not provided"],
+  ["Property type",item.propertyType||"Not provided"],
+  ["Last reported active",new Date(item.lastSeenDate).toLocaleDateString("en-US",{dateStyle:"medium",timeZone:"UTC"})],
+  ["Listing office",item.officeName||"Not supplied"]
+ ];
+ listingFacts.forEach(([k,v])=>facts.append(makeFact(k,v)));
+ detailContent.append(facts);
+ if(hasAmbiguousRentalScope(item))
+   detailContent.append(dom("p","market-warning","This one-bedroom single-family record may refer to a room or partial property. Confirm what the listed rent covers."));
+ const info=dom("section","detail-checklist");
+ info.append(dom("h3","","Questions to ask before applying"));
+ const check=document.createElement("ul");
+ ["Is the entire home or only a room included?","Is this specific unit currently available, and at what rent?",
+  "What are the deposit, utilities, required fees and total monthly cost?",
+  "What are the lease length, income criteria, pet rules and refund policy?"].forEach(q=>{
+   const li=dom("li","",q);check.append(li);
+  });
+ info.append(check);detailContent.append(info);
+ const actions=dom("div","detail-actions");
+ const plan=dom("button","market-primary-action","Calculate my total cost");
+ plan.type="button";plan.addEventListener("click",()=>{
+  costInput("rent").value=item.rent;
+  document.querySelector("#budget-selected").textContent="Planning for "+item.address+". Other charges must be confirmed with the property.";
+  updateCostPlanner();detailDialog.close();
+  document.querySelector("#renter-budget").scrollIntoView({behavior:"smooth",block:"start"});
+ });
+ actions.append(plan);
+ const office=trustedOfficeUrl(item.officeWebsite);
+ if(office){
+  const a=dom("a","market-secondary-action","Contact listing office website ↗");
+  a.href=office;a.target="_blank";a.rel="noopener noreferrer";
+  actions.append(a);
+ }else{
+  actions.append(dom("p","small","Direct application/contact information is not supplied for this record. ApartmentFinder does not collect applications or payments."));
+ }
+ detailContent.append(actions);
+ detailDialog.showModal();
+}
+
 function listingCard(item) {
   const card=dom("article","listing-card market-card");
   const art=dom("div","market-card-visual");
@@ -95,7 +157,10 @@ function listingCard(item) {
   const trust=dom("p","market-disclosure","Provider last saw this listing active: "+last+". Current availability and all fees are unverified.");
   body.append(trust);
   const actions=dom("div","market-card-actions");
-  const plan=dom("button","market-primary-action","Calculate move-in cost");
+  const detailsButton=dom("button","market-primary-action","View full details");
+  detailsButton.type="button";detailsButton.addEventListener("click",()=>openRentalDetails(item));
+  actions.append(detailsButton);
+  const plan=dom("button","market-secondary-button","Calculate my costs");
   plan.type="button";
   plan.addEventListener("click",()=>{
     costInput("rent").value=item.rent;
