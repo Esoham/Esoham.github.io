@@ -76,3 +76,13 @@ test("no horizontal document overflow on this viewport",async ({page})=>{
   const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>window.innerWidth+2);
   expect(overflow).toBe(false);
 });
+
+test("listing concern link is visible and warns that reporting requires GitHub",async ({page})=>{
+ const first=page.locator("#market-grid .market-card").first();
+ await expect(first.locator(".market-freshness")).toContainText("Seen by provider");
+ const link=first.getByRole("link",{name:/Flag a listing concern/});
+ await expect(link).toHaveAttribute("href",/github\.com\/Esoham\/ApartmentFinder\/issues\/new/);
+ await expect(link).toHaveAttribute("target","_blank");
+ await first.getByRole("button",{name:"View full details"}).click();
+ await expect(page.locator("#rental-detail-content")).toContainText("An account is required");
+});
