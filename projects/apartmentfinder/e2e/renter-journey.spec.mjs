@@ -86,3 +86,14 @@ test("listing concern link is visible and warns that reporting requires GitHub",
  await first.getByRole("button",{name:"View full details"}).click();
  await expect(page.locator("#rental-detail-content")).toContainText("An account is required");
 });
+
+test("beta feedback remains on-site until user chooses to submit",async ({page})=>{
+  await page.locator("#feedback-result").fill("The rental comparison page is hard to navigate on my phone.");
+  await page.getByRole("button",{name:"Prepare report"}).click();
+  await expect(page.locator("#feedback-preview")).toContainText("rental comparison page");
+  await expect(page.locator("#feedback-status")).toContainText("Nothing has been submitted yet");
+  await expect(page.locator("#feedback-submit-link")).toHaveAttribute("href",/github\.com\/Esoham\/ApartmentFinder\/issues\/new/);
+  await page.locator("#feedback-result").fill("Edited report for checking changes");
+  await expect(page.locator("#feedback-submit-link")).toBeHidden();
+  await expect(page.locator("#feedback-copy")).toBeDisabled();
+});
