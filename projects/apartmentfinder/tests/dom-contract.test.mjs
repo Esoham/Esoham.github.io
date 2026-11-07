@@ -23,7 +23,7 @@ test("every static app and provider DOM selector exists",()=>{
 
 test("real comparison has button, selected state, table, and clear callback",()=>{
  for(const id of ["real-compare","real-compare-status","real-compare-wrap","real-compare-head","real-compare-body","real-compare-clear"]){
-  assert.match(html,new RegExp('id=["\\']'+id+'["\\']'));
+  assert.ok(html.includes('id="'+id+'"'),"Missing HTML control: "+id);
  }
  assert.match(live,/toggleRentalComparison\(realComparison,item\.id\)/);
  assert.match(live,/renderRealComparison/);
