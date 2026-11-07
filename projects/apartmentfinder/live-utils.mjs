@@ -62,7 +62,8 @@ export function hasAmbiguousRentalScope(item) {
 
 /** Calculator for user-entered costs; missing provider fees are never inferred. */
 export function estimateRenterCosts(values) {
-  const names=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront"];
+  const names=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront",
+    "transportation","groceries","debtPayments","otherEssentials"];
   const v={};
   for(const name of names){
     const raw=values[name] ?? 0;
@@ -72,9 +73,14 @@ export function estimateRenterCosts(values) {
   }
   if(v.rent===0) return {valid:false,error:"Enter a listed monthly rent."};
   const monthly=v.rent+v.utilities+v.otherMonthly;
+  const essentials=v.transportation+v.groceries+v.debtPayments+v.otherEssentials;
+  const livingTotal=monthly+essentials;
   const upfront=v.rent+v.deposit+v.applicationFee+v.adminFee+v.otherUpfront;
-  return {valid:true,monthly,upfront,remaining:v.income>0?v.income-monthly:null,
-    rentPercent:v.income>0?100*v.rent/v.income:null};
+  return {valid:true,monthly,upfront,essentials,livingTotal,
+    remaining:v.income>0?v.income-monthly:null,
+    livingRemaining:v.income>0?v.income-livingTotal:null,
+    rentPercent:v.income>0?100*v.rent/v.income:null,
+    livingPercent:v.income>0?100*livingTotal/v.income:null};
 }
 
 /** Pure shortlist toggle. A real-rental comparison is limited to three records. */
