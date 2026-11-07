@@ -113,6 +113,27 @@ const detailDialog=document.querySelector("#rental-detail-dialog");
 const detailContent=document.querySelector("#rental-detail-content");
 document.querySelector("#rental-detail-close").addEventListener("click",()=>detailDialog.close());
 detailDialog.addEventListener("click",event=>{if(event.target===detailDialog)detailDialog.close();});
+function issueReportUrl(item){
+ const title="Rental data concern: "+item.address.slice(0,110);
+ const body=[
+  "Provider-reported rental data concern",
+  "",
+  "Property address: "+item.address,
+  "Provider record ID: "+item.id,
+  "Reported listed rent: "+usd(item.rent),
+  "",
+  "What looks incorrect? (Please describe the issue without including your phone number, income, or other personal information.)",
+  "",
+  "Reminder: This is a public GitHub issue. An account is required to submit it."
+ ].join("\n");
+ return "https://github.com/Esoham/ApartmentFinder/issues/new?title="+encodeURIComponent(title)+"&body="+encodeURIComponent(body);
+}
+function reportLink(item){
+ const a=dom("a","market-report-link","Flag a listing concern ↗");
+ a.href=issueReportUrl(item);a.target="_blank";a.rel="noopener noreferrer";
+ a.title="Opens a pre-filled public GitHub issue; a GitHub account is required";
+ return a;
+}
 function makeFact(label,value){
  const wrapper=dom("div","detail-fact");
  wrapper.append(dom("span","",label),dom("strong","",value));
@@ -167,6 +188,8 @@ function openRentalDetails(item){
   actions.append(dom("p","small","Direct application/contact information is not supplied for this record. ApartmentFinder does not collect applications or payments."));
  }
  detailContent.append(actions);
+ detailContent.append(dom("p","small","See something inaccurate? Reporting opens a public GitHub form in a new tab. An account is required; do not include private financial or contact information."));
+ detailContent.append(reportLink(item));
  detailDialog.showModal();
 }
 
@@ -199,6 +222,9 @@ function listingCard(item) {
   if(hasAmbiguousRentalScope(item))
     body.append(dom("p","market-warning","⚠ Rental scope needs checking: one-bedroom single-family record could refer to a room, not the whole home."));
   const last=new Date(item.lastSeenDate).toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric",timeZone:"UTC"});
+  const daysOld=Math.max(0,Math.floor((Date.now()-Date.parse(item.lastSeenDate))/86400000));
+  const freshness=daysOld===0?"Seen by provider today":daysOld===1?"Seen by provider 1 day ago":"Seen by provider "+daysOld+" days ago";
+  body.append(dom("p","market-freshness",freshness));
   const trust=dom("p","market-disclosure","Provider last saw this listing active: "+last+". Current availability and all fees are unverified.");
   body.append(trust);
   const actions=dom("div","market-card-actions");
@@ -244,6 +270,7 @@ function listingCard(item) {
     details.append(link);
   }else details.append(dom("p","small","No direct listing-office website was supplied. Use the neighborhood link to research the address independently."));
   body.append(details);
+  body.append(reportLink(item));
   card.append(art,body);
   return card;
 }
