@@ -87,3 +87,8 @@
 .real-compare-shell .compare-intro{margin:1rem 0}
 .market-secondary-button[aria-pressed="true"]{background:#e5f3e8;border-color:#2c8158;color:#175c3b}
 @media(max-width:650px){.real-compare-shell{padding:2.5rem 1.2rem}.real-compare-shell .table-scroll{margin-left:-.4rem;margin-right:-.4rem}}
+
+/* Trust and feedback visibility for beta rental listings. */
+.market-freshness{font-size:.77rem;font-weight:800;color:#24644a;background:#edf5ef;border-radius:8px;padding:.45rem .65rem;margin:.55rem 0}
+.market-report-link{display:inline-flex;align-items:center;align-self:flex-start;font-size:.76rem;font-weight:700;color:#345c50;text-decoration:underline;text-underline-offset:3px;margin-top:.6rem}
+.market-report-link:hover{color:#0d4930}
