@@ -7,7 +7,7 @@ Help renters find provider-reported options, understand advertised rents and *en
 - RentCast provider snapshot and stale/inactive filtering, without exposing API credentials in frontend files.
 - Real listing cards with city, rent, beds, baths, property type, provider last-seen date and clearly labeled uncertainty.
 - Search, ZIP/city/type filters, sorting, browser-only saved records and up-to-three real-rental comparison.
-- On-site property details and renter-entered budget planning; unknown fees are not guessed.
+- On-site property details and renter-entered budget planning, including transportation, groceries, debt payments and other essentials; unknown fees are not guessed. The planner shows both housing costs and estimated cash remaining after entered living expenses.
 - Pre-filled **public GitHub issue** route for listing concerns; requires GitHub sign-in and is not a private or in-app ticket system.
 - On-site beta feedback form prepares and previews a report without a backend; users must explicitly copy or continue to GitHub to submit. No automatic submission is claimed.
 - Node regression tests and Playwright desktop/mobile journeys via GitHub Actions.
@@ -22,12 +22,13 @@ Help renters find provider-reported options, understand advertised rents and *en
 - [ ] Publish plain-English privacy / contact / limitation notices before collecting renter feedback. Avoid collecting SSNs, lease applications, passwords or payment information.
 - [ ] Recruit 5–10 opt-in Atlanta renters for observed, voluntary usability sessions. Avoid storing their financial figures or addresses.
 - [ ] Confirm the production site's error states when the rental feed is unavailable, stale or not configured.
+- [ ] Check complete living-cost calculations on desktop and mobile, including negative remaining balance and missing expense fields. Ensure no advice implies rental approval.
 
 ## Renter beta exercise
 1. Find a listing in a target city under a stated maximum monthly rent.
 2. Open details and determine which data is verified vs. provider-reported.
 3. Save two listings, compare them, and check missing fees.
-4. Use the budget planner with sample numbers, then identify questions to ask before applying.
+4. Use the budget planner with sample numbers for rent, utilities, transportation, food and debts. Compare housing-only totals with overall monthly living costs, then identify questions to ask before applying.
 5. Prepare an on-site beta feedback draft and confirm no report is silently submitted. To file the issue, GitHub sign-in is required.
 6. Record outcome (completed or blocked), time, and confusing screens—not sensitive participant details.
 
