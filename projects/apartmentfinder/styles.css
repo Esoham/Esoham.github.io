@@ -106,3 +106,6 @@
 .budget-guidance{grid-column:1/-1;margin:0;padding:.85rem 1rem;border-radius:9px;background:#fff9ed;border:1px solid #e9d9b7;color:#62512c;font-size:.85rem}
 .budget-results .budget-result:nth-child(3),.budget-results .budget-result:nth-child(4){background:#dfeee5}
 .budget-results .budget-result:nth-child(4) strong{font-size:1.35rem}
+
+/* Non-alarmist review signals; risk flag does not establish fraud. */
+.market-review-note{font-size:.76rem;background:#f3f6f7;border:1px solid #d8e0e3;color:#3c565b;border-radius:8px;padding:.55rem .7rem;margin:.4rem 0}
