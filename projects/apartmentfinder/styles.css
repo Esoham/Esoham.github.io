@@ -92,3 +92,12 @@
 .market-freshness{font-size:.77rem;font-weight:800;color:#24644a;background:#edf5ef;border-radius:8px;padding:.45rem .65rem;margin:.55rem 0}
 .market-report-link{display:inline-flex;align-items:center;align-self:flex-start;font-size:.76rem;font-weight:700;color:#345c50;text-decoration:underline;text-underline-offset:3px;margin-top:.6rem}
 .market-report-link:hover{color:#0d4930}
+
+/* Beta feedback: local drafting only, clearly labeled external submission. */
+.beta-feedback textarea{width:100%;min-height:100px;border:1px solid #cad5cc;border-radius:8px;background:#fafcfb;padding:.7rem;resize:vertical;font:inherit;color:#233c2f}
+.beta-feedback .market-filters{grid-template-columns:1fr 1fr}
+.beta-feedback .market-filters .field:last-child{grid-column:1/-1}
+.feedback-actions{display:flex;gap:.7rem;align-items:center;flex-wrap:wrap}
+.feedback-actions [disabled]{opacity:.45;cursor:not-allowed}
+.feedback-preview{white-space:pre-wrap;word-break:break-word;border:1px solid #d9e6dc;border-radius:9px;background:#f2f7f3;padding:1rem;font-size:.8rem;max-height:260px;overflow:auto}
+@media(max-width:650px){.beta-feedback .market-filters{grid-template-columns:1fr}.beta-feedback .market-filters .field:last-child{grid-column:auto}}
