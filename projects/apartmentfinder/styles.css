@@ -101,3 +101,8 @@
 .feedback-actions [disabled]{opacity:.45;cursor:not-allowed}
 .feedback-preview{white-space:pre-wrap;word-break:break-word;border:1px solid #d9e6dc;border-radius:9px;background:#f2f7f3;padding:1rem;font-size:.8rem;max-height:260px;overflow:auto}
 @media(max-width:650px){.beta-feedback .market-filters{grid-template-columns:1fr}.beta-feedback .market-filters .field:last-child{grid-column:auto}}
+
+/* Cash-flow guidance makes renter budget totals actionable, not falsely definitive. */
+.budget-guidance{grid-column:1/-1;margin:0;padding:.85rem 1rem;border-radius:9px;background:#fff9ed;border:1px solid #e9d9b7;color:#62512c;font-size:.85rem}
+.budget-results .budget-result:nth-child(3),.budget-results .budget-result:nth-child(4){background:#dfeee5}
+.budget-results .budget-result:nth-child(4) strong{font-size:1.35rem}
