@@ -26,6 +26,7 @@ jobs:
         run: |
           node --check projects/apartmentfinder/app.mjs
           node --check projects/apartmentfinder/live.mjs
+          node --check projects/apartmentfinder/feedback.mjs
           node --check projects/apartmentfinder/live-utils.mjs
           node --check projects/apartmentfinder/logic.mjs
       - name: Run client regression tests
