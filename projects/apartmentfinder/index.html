@@ -71,6 +71,7 @@
           <select id="market-bedrooms"><option value="0">Any / unknown</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
       </form>
       <div class="market-toolbar" aria-label="Rental results controls">
+        <label class="check-label"><input type="checkbox" id="market-exclude-ambiguous" checked> Exclude potentially shared / room rentals</label>
         <label class="check-label"><input type="checkbox" id="market-saved-only"> Saved rentals only</label>
         <label class="market-sort-label" for="market-sort">Sort by
           <select id="market-sort"><option value="lowest">Lowest rent</option><option value="newest">Recently seen</option><option value="highest">Highest rent</option></select>
@@ -78,6 +79,7 @@
         <button id="market-reset" type="button" class="reset-button">Clear filters</button>
       </div>
       <p id="market-results" class="small" aria-live="polite"></p>
+      <p id="market-ambiguity-note" class="small" aria-live="polite"></p>
       <div id="market-grid" class="listing-grid" aria-label="Provider-reported rentals"></div>
       <div class="market-more-wrap"><button id="market-more" type="button" class="secondary-button" hidden>Show more rentals</button></div>
       <p class="small">Saved rentals remain on this device only, without an account. Provider records may disappear or change after refresh. Neighborhood links are map searches, not verified listing advertisements.</p>
