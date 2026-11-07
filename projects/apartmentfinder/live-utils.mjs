@@ -76,3 +76,17 @@ export function estimateRenterCosts(values) {
   return {valid:true,monthly,upfront,remaining:v.income>0?v.income-monthly:null,
     rentPercent:v.income>0?100*v.rent/v.income:null};
 }
+
+/** Pure shortlist toggle. A real-rental comparison is limited to three records. */
+export function toggleRentalComparison(ids, id, limit = 3) {
+  const current = Array.isArray(ids) ? [...new Set(ids.filter(x => typeof x === "string"))] : [];
+  if (current.includes(id)) return { ids: current.filter(x => x !== id), limited: false };
+  if (current.length >= limit) return { ids: current, limited: true };
+  return { ids: [...current, id], limited: false };
+}
+
+/** Only compare known provider fields; unknown charges are never treated as zero. */
+export function compareRentalFacts(items, ids) {
+  const byId = new Map(items.map(item => [item.id, item]));
+  return ids.map(id => byId.get(id)).filter(Boolean);
+}
