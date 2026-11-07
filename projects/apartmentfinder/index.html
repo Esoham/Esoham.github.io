@@ -60,6 +60,10 @@
       <form id="market-filters" class="market-filters" aria-label="Provider rental listing filters">
         <div class="field"><label for="market-city">City</label>
           <select id="market-city"><option value="">All covered cities</option></select></div>
+        <div class="field"><label for="market-zip">ZIP code</label>
+          <input id="market-zip" type="text" inputmode="numeric" pattern="[0-9]{0,5}" maxlength="5" placeholder="e.g. 30337"></div>
+        <div class="field"><label for="market-property-type">Property type</label>
+          <select id="market-property-type"><option value="">All property types</option></select></div>
         <div class="field"><label for="market-max-rent">Maximum listed rent</label>
           <input id="market-max-rent" type="number" min="0" max="10000" step="25" value="1200"></div>
         <div class="field"><label for="market-bedrooms">Minimum bedrooms</label>
@@ -67,7 +71,7 @@
       </form>
       <p id="market-results" class="small" aria-live="polite"></p>
       <div id="market-grid" class="listing-grid" aria-label="Provider-reported rentals"></div>
-      <p class="fine-print">A provider's “Active” status is not proof an individual apartment is still available. The source may omit application fees, deposits, utilities and pet rules, so ApartmentFinder never guesses those costs for provider listings. Refreshes are periodic, not real-time.</p>
+      <p class="fine-print">A provider's “Active” status is not proof an individual apartment is still available. Low listed prices may apply to a single room rather than an entire home; confirm what is rented. The source may omit application fees, deposits, utilities and pet rules, so ApartmentFinder never guesses those costs for provider listings. Refreshes are periodic, not real-time.</p>
     </section>
 
     <section class="search-shell" id="search" aria-labelledby="search-title">
