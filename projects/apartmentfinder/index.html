@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ApartmentFinder: an interactive educational prototype to compare rent and move-in costs using clearly labeled sample homes.">
+  <title>ApartmentFinder — Budget-first apartment discovery</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#search">Skip to apartment search</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="ApartmentFinder homepage"><span class="brand-icon" aria-hidden="true">⌂</span><span>Apartment<span class="brand-emphasis">Finder</span></span></a>
+      <nav aria-label="Primary navigation">
+        <a href="#search">Explore homes</a><a href="#compare">Compare</a><a href="#methodology">How it works</a>
+      </nav>
+      <span class="topbar-label">Portfolio prototype</span>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-inner">
+        <div class="hero-copy">
+          <span class="eyebrow">A smarter way to search</span>
+          <h1 id="hero-title">Find your next place.<br><span>Know the full cost.</span></h1>
+          <p>Search by budget, compare neighborhoods, and estimate how much you'll need before moving in. Made for renters who want clarity, not surprises.</p>
+          <a class="primary-link" href="#search">Explore sample apartments <span aria-hidden="true">↗</span></a>
+          <p class="disclosure"><strong>Demo only:</strong> Every listing and price on this page is fictional. This is not a live rental service or an offer to rent.</p>
+        </div>
+        <div class="hero-graphic" aria-hidden="true">
+          <div class="building building-back"><div class="windows"></div></div>
+          <div class="building building-front"><div class="windows"></div><div class="door"></div></div>
+          <div class="cost-note"><span>Move-in estimate</span><strong>Rent + deposits + fees</strong><small>See the whole picture</small></div>
+          <div class="sun"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="search-shell" id="search" aria-labelledby="search-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Your search, your priorities</span><h2 id="search-title">Explore apartments</h2></div>
+        <p>Try the filters using realistic fictional examples in metro Atlanta.</p>
+      </div>
+      <form class="filters" id="search-form" aria-label="Apartment filters">
+        <div class="field">
+          <label for="city">City</label>
+          <select id="city" name="city"><option value="">All demo cities</option></select>
+        </div>
+        <div class="field">
+          <label for="zip">ZIP code</label>
+          <input id="zip" name="zip" type="text" inputmode="numeric" pattern="[0-9]{0,5}" maxlength="5" placeholder="e.g. 30337">
+        </div>
+        <div class="field">
+          <label for="max-rent">Maximum monthly rent</label>
+          <input id="max-rent" name="max-rent" type="number" min="0" max="10000" step="25" value="1200" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="bedrooms">Minimum bedrooms</label>
+          <select id="bedrooms" name="bedrooms">
+            <option value="0">Any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="move-in-budget">Max estimated move-in cost</label>
+          <input id="move-in-budget" name="move-in-budget" type="number" min="0" max="25000" step="50" placeholder="Any amount" inputmode="numeric">
+        </div>
+        <div class="field">
+          <label for="sort-by">Sort by</label>
+          <select id="sort-by" name="sort-by">
+            <option value="rent">Lowest rent</option>
+            <option value="moveIn">Lowest move-in cost</option>
+            <option value="monthly">Lowest estimated monthly total</option>
+          </select>
+        </div>
+        <div class="filter-actions">
+          <label class="check-label"><input id="pet-friendly" type="checkbox"> Pet-friendly only</label>
+          <label class="check-label"><input id="favorites-only" type="checkbox"> Saved homes only</label>
+          <button class="reset-button" id="reset-filters" type="button">Reset filters</button>
+        </div>
+      </form>
+
+      <div class="results-bar">
+        <div><p id="results-count" role="status" aria-live="polite">Loading sample homes…</p><p class="small">Illustrative data, not verified rental availability.</p></div>
+        <p class="small">All amounts in USD</p>
+      </div>
+      <div id="listing-grid" class="listing-grid" aria-label="Apartment search results"></div>
+      <p id="empty-results" class="empty-state" hidden>No sample homes match those filters. Try raising your rent budget or changing the bedroom count.</p>
+    </section>
+
+    <section class="compare-shell" id="compare" aria-labelledby="compare-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Make the numbers make sense</span><h2 id="compare-title">Compare your options</h2></div>
+        <p>Choose up to 3 homes. We show estimated upfront and ongoing costs side by side.</p>
+      </div>
+      <p id="compare-instruction" class="compare-intro">Select “Compare” on a listing card to begin.</p>
+      <div class="table-scroll" id="compare-table-wrap" hidden>
+        <table id="compare-table">
+          <caption>Selected sample homes: rent, deposits, and estimated costs</caption>
+          <thead id="compare-head"></thead>
+          <tbody id="compare-body"></tbody>
+        </table>
+      </div>
+      <button class="secondary-button" id="clear-compare" type="button" hidden>Clear comparison</button>
+    </section>
+
+    <section class="methodology" id="methodology">
+      <div class="method-intro"><span class="eyebrow">Built around informed decisions</span><h2>What do the estimates include?</h2></div>
+      <div class="method-cards">
+        <article><span class="method-number">01</span><h3>Monthly rent</h3><p>The sample advertised rent for the home. Actual properties may charge additional recurring fees.</p></article>
+        <article><span class="method-number">02</span><h3>Estimated monthly total</h3><p>Rent + sample utilities estimate + optional parking. Pet rent is added when you choose a pet-friendly unit with a pet-rent amount.</p></article>
+        <article><span class="method-number">03</span><h3>Estimated move-in cost</h3><p>First month's rent + sample security deposit + application fee + administrative fee. It excludes taxes, pet deposits, insurance, prorating, and other possible charges.</p></article>
+      </div>
+      <p class="fine-print">This project demonstrates product search, client-side filtering, favorites, comparison and transparent calculations. Listings are synthetic, stored in source code, and do not represent currently available apartments. No inquiries, applications or payments can be submitted.</p>
+    </section>
+  </main>
+  <footer><span><strong>ApartmentFinder</strong> · Independent product prototype</span><a href="https://github.com/Esoham/ApartmentFinder" rel="noopener noreferrer">View source on GitHub</a></footer>
+</body>
+</html>

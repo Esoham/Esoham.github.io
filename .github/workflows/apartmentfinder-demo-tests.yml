@@ -1,0 +1,43 @@
+name: ApartmentFinder public demo checks
+on:
+  push:
+    paths:
+      - 'projects/apartmentfinder/**'
+      - '.github/workflows/apartmentfinder-demo-tests.yml'
+      - 'index.html'
+  pull_request:
+    paths:
+      - 'projects/apartmentfinder/**'
+      - '.github/workflows/apartmentfinder-demo-tests.yml'
+      - 'index.html'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run affordability and filtering tests
+        run: node --test projects/apartmentfinder/tests/logic.test.mjs
+      - name: Check frontend syntax and static resource links
+        run: |
+          node --check projects/apartmentfinder/app.mjs
+          node --check projects/apartmentfinder/logic.mjs
+          node --check projects/apartmentfinder/listings.mjs
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const dir = 'projects/apartmentfinder';
+          const page = fs.readFileSync(dir + '/index.html', 'utf8');
+          for (const asset of ['app.mjs', 'listings.mjs', 'logic.mjs', 'styles.css']) {
+            if (!fs.existsSync(dir + '/' + asset)) throw new Error('Missing ' + asset);
+          }
+          if (!page.includes('src="./app.mjs"')) throw new Error('Frontend entrypoint missing');
+          if (!page.includes('Every listing and price on this page is fictional')) throw new Error('Demo disclosure missing');
+          const home = fs.readFileSync('index.html', 'utf8');
+          if (!home.includes('href="projects/apartmentfinder/"')) throw new Error('Portfolio link missing');
+          NODE
