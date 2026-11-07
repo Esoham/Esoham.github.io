@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
   <script type="module" src="./live.mjs"></script>
+  <script type="module" src="./feedback.mjs"></script>
 </head>
 <body>
   <a class="skip-link" href="#search">Skip to apartment search</a>
@@ -15,7 +16,7 @@
     <div class="topbar-inner">
       <a class="brand" href="#top" aria-label="ApartmentFinder homepage"><span class="brand-icon" aria-hidden="true">⌂</span><span>Apartment<span class="brand-emphasis">Finder</span></span></a>
       <nav aria-label="Primary navigation">
-        <a href="#market-search">Actual rentals</a><a href="#renter-budget">Budget planner</a><a href="#real-compare">Compare rentals</a><a href="#search">Sample demo</a>
+        <a href="#market-search">Actual rentals</a><a href="#renter-budget">Budget planner</a><a href="#real-compare">Compare rentals</a><a href="#beta-feedback">Feedback</a><a href="#search">Sample demo</a>
       </nav>
       <span class="topbar-label">Portfolio prototype</span>
     </div>
@@ -184,6 +185,48 @@
         </table>
       </div>
       <button class="secondary-button" id="clear-compare" type="button" hidden>Clear comparison</button>
+    </section>
+
+    <section class="search-shell beta-feedback" id="beta-feedback" aria-labelledby="beta-feedback-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Help improve ApartmentFinder</span><h2 id="beta-feedback-title">Share beta feedback</h2></div>
+        <p>Tell us which steps are unclear, which controls break, or whether a rental record needs checking.</p>
+      </div>
+      <div class="budget-panel">
+        <form id="beta-feedback-form" aria-label="Prepare beta feedback">
+          <div class="market-filters">
+            <div class="field"><label for="feedback-category">What needs attention?</label>
+              <select id="feedback-category">
+                <option value="Broken feature">A button or feature doesn't work</option>
+                <option value="Listing concern">A rental listing looks incorrect</option>
+                <option value="Usability">Something is confusing or difficult</option>
+                <option value="Accessibility">Accessibility or mobile issue</option>
+                <option value="Suggestion">Idea for improving the site</option>
+              </select>
+            </div>
+            <div class="field"><label for="feedback-step">Where did it happen?</label>
+              <select id="feedback-step">
+                <option value="Search">Rental search and filters</option>
+                <option value="Details">Property details</option>
+                <option value="Compare">Compare rentals</option>
+                <option value="Budget">Cost calculator</option>
+                <option value="Other">Other section</option>
+              </select>
+            </div>
+            <div class="field"><label for="feedback-result">What happened?</label>
+              <textarea id="feedback-result" rows="3" maxlength="800" placeholder="Describe the problem and what you expected to happen" required></textarea>
+            </div>
+          </div>
+          <p class="small">Please don't include your name, email, phone number, income, account credentials or other private details. Your draft stays in your browser until you choose to copy or open an external issue form.</p>
+          <div class="feedback-actions">
+            <button type="submit" class="market-primary-action" id="feedback-prepare">Prepare report</button>
+            <button type="button" class="secondary-button" id="feedback-copy" disabled>Copy report</button>
+            <a id="feedback-submit-link" href="https://github.com/Esoham/ApartmentFinder/issues/new" target="_blank" rel="noopener noreferrer" class="market-secondary-action" hidden>Continue to GitHub to submit ↗</a>
+          </div>
+          <p id="feedback-status" class="market-status" role="status" aria-live="polite">Reports are not automatically sent. GitHub submission requires an account and creates a public issue.</p>
+          <pre id="feedback-preview" class="feedback-preview" hidden></pre>
+        </form>
+      </div>
     </section>
 
     <section class="methodology" id="methodology">
