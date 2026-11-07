@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope } from "../live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts } from "../live-utils.mjs";
 const NOW = new Date("2026-11-07T13:00:00Z");
 const ITEM = {id:"a",address:"Test Address, Atlanta, GA",city:"Atlanta",state:"GA",rent:1000,beds:1,baths:1,
  lastSeenDate:"2026-11-06T12:00:00Z",status:"Active",officeWebsite:"https://example.com"};
@@ -53,4 +53,18 @@ test("single-family one-bedroom listings carry ambiguity warning",()=>{
  assert.equal(hasAmbiguousRentalScope({propertyType:"Single Family",beds:1}),true);
  assert.equal(hasAmbiguousRentalScope({propertyType:"Apartment",beds:1}),false);
  assert.equal(hasAmbiguousRentalScope({propertyType:"Single Family",beds:3}),false);
+});
+
+test("renter planner sums only entered expenses",()=>{
+ const v=estimateRenterCosts({rent:800,income:2600,utilities:130,otherMonthly:50,deposit:400,applicationFee:65,adminFee:0,otherUpfront:100});
+ assert.equal(v.valid,true);assert.equal(v.monthly,980);assert.equal(v.upfront,1365);assert.equal(v.remaining,1620);
+});
+test("planner rejects negative, invalid and missing rent",()=>{
+ assert.equal(estimateRenterCosts({rent:-5,income:1600}).valid,false);
+ assert.equal(estimateRenterCosts({rent:800,income:"bad"}).valid,false);
+ assert.equal(estimateRenterCosts({rent:0,income:1800}).valid,false);
+});
+test("planner with no income avoids misleading affordability ratio",()=>{
+ const v=estimateRenterCosts({rent:850,income:0});
+ assert.equal(v.rentPercent,null);assert.equal(v.remaining,null);
 });
