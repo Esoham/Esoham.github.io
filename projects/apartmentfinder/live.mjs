@@ -1,4 +1,4 @@
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts } from "./live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts, rentalReviewFlags } from "./live-utils.mjs";
 
 const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
@@ -229,6 +229,13 @@ function listingCard(item) {
   body.append(facts);
   if(hasAmbiguousRentalScope(item))
     body.append(dom("p","market-warning","⚠ Rental scope needs checking: one-bedroom single-family record could refer to a room, not the whole home."));
+  const flags=rentalReviewFlags(item);
+  if(flags.includes("scope-unverified"))
+    body.append(dom("p","market-warning","Rental scope unverified: this may be a room or shared accommodation, not an entire home."));
+  if(flags.includes("contact-not-provided"))
+    body.append(dom("p","market-review-note","Direct listing contact not provided. Research the property independently before paying any fees."));
+  if(flags.includes("long-running-advertisement"))
+    body.append(dom("p","market-review-note","Long-running advertisement: confirm current pricing and availability directly."));
   const last=new Date(item.lastSeenDate).toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric",timeZone:"UTC"});
   const daysOld=Math.max(0,Math.floor((Date.now()-Date.parse(item.lastSeenDate))/86400000));
   const freshness=daysOld===0?"Seen by provider today":daysOld===1?"Seen by provider 1 day ago":"Seen by provider "+daysOld+" days ago";
