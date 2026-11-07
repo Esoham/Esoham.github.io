@@ -24,7 +24,7 @@ function usd(value) {
 }
 
 
-const costFields=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront"];
+const costFields=["rent","income","utilities","otherMonthly","transportation","groceries","debtPayments","otherEssentials","deposit","applicationFee","adminFee","otherUpfront"];
 const costInput=name=>document.querySelector("#budget-"+name);
 const costResult=document.querySelector("#budget-results");
 function updateCostPlanner(){
@@ -33,15 +33,23 @@ function updateCostPlanner(){
   if(!result.valid){costResult.textContent=result.error;return;}
   const rows=[
     ["Monthly housing estimate",usd(result.monthly)],
+    ["Other essential expenses",usd(result.essentials)],
+    ["Total entered monthly living costs",usd(result.livingTotal)],
+    ["Left after entered living costs",result.livingRemaining===null?"Enter income":usd(result.livingRemaining)],
     ["Entered move-in total",usd(result.upfront)],
-    ["Rent / take-home income",result.rentPercent===null?"Enter income":result.rentPercent.toFixed(1)+"%"],
-    ["Remaining after housing",result.remaining===null?"Enter income":usd(result.remaining)]
+    ["Rent / take-home income",result.rentPercent===null?"Enter income":result.rentPercent.toFixed(1)+"%"]
   ];
   costResult.replaceChildren(...rows.map(([label,value])=>{
     const cell=dom("div","budget-result");
     cell.append(dom("span","",label),dom("strong","",value));
     return cell;
   }));
+  const guidance=dom("p","budget-guidance",result.livingRemaining===null?
+    "Enter take-home income to see what remains after entered expenses.":
+    result.livingRemaining<0?
+      "Entered living costs exceed take-home income. Review expenses or consider lower-cost housing.":
+      "This is a cash-flow estimate, not approval for a rental. Consider savings, healthcare and unexpected expenses.");
+  costResult.append(guidance);
 }
 costFields.forEach(key=>costInput(key).addEventListener("input",updateCostPlanner));
 document.querySelector("#budget-form").addEventListener("submit",event=>event.preventDefault());
