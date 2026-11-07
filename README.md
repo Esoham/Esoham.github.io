@@ -10,7 +10,7 @@ A responsive, dependency-free portfolio website designed to help recruiters and 
 ## What the site highlights
 
 1. **Flagship AI applications:** ChangeGuard MFG and Vanessa Voice AI, with real source-repository screenshots where available.
-2. **Hands-on prototypes:** MerchantFlow, SentinelWatch, VerityFlow, FluxPilot, ResolveIQ, and AuditGuard AI.
+2. **Hands-on prototypes:** ApartmentFinder (fictional rental listings and budget comparison), MerchantFlow, SentinelWatch, VerityFlow, FluxPilot, ResolveIQ, and AuditGuard AI.
 3. **AI Generalist / evaluation work sample:** an annotated rubric-based exercise with explicitly fictional responses.
 4. **Professional experience:** manufacturing ERP/inventory operations and software QA, plus a print-friendly resume and email contact route.
 
@@ -21,6 +21,7 @@ Every project points to either a demonstration, a case study, or directly inspec
 - [Homepage](index.html) — semantic HTML, responsive embedded CSS, contact links, and project visual previews; no external UI dependencies.
 - [Printable resume](resume.html) — professional experience and selected technical projects with a print-to-PDF option.
 - [Project case studies and demos](projects/)
+- [ApartmentFinder sample demo](projects/apartmentfinder/) — static renter affordability prototype based on the [original C# project](https://github.com/Esoham/ApartmentFinder); all homes are fictional.
 - [Local SVG preview assets](assets/)
 - [Project tests workflow](.github/workflows/product-tests.yml)
 - [AI evaluation work sample](https://github.com/Esoham/Esoham/blob/main/AI_EVALUATION_WORK_SAMPLE.md)
