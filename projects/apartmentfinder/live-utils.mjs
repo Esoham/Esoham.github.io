@@ -60,6 +60,30 @@ export function hasAmbiguousRentalScope(item) {
   return (type === "single family" || type === "single-family") && item?.beds === 1;
 }
 
+/** Automated review flags are warnings, not independent verification. */
+export function rentalReviewFlags(item) {
+  const flags=[];
+  if (hasAmbiguousRentalScope(item)) flags.push("scope-unverified");
+  if (!item.officeName && !trustedOfficeUrl(item.officeWebsite)) flags.push("contact-not-provided");
+  const listed=Date.parse(item.listedDate ?? "");
+  const lastSeen=Date.parse(item.lastSeenDate ?? "");
+  if (Number.isFinite(listed) && Number.isFinite(lastSeen) &&
+      lastSeen-listed>180*86400000) flags.push("long-running-advertisement");
+  return flags;
+}
+
+export function auditRentalSnapshot(payload, now=new Date()) {
+  const result=validateSnapshot(payload,now);
+  if(result.state!=="ready")return {state:result.state,total:0,review:[],counts:{}};
+  const counts={"scope-unverified":0,"contact-not-provided":0,"long-running-advertisement":0};
+  const review=result.items.map(item=>({
+    id:item.id,address:item.address,city:item.city,rent:item.rent,
+    flags:rentalReviewFlags(item)
+  })).filter(item=>item.flags.length);
+  for(const item of review)for(const flag of item.flags)counts[flag]++;
+  return {state:result.state,total:result.items.length,review,counts};
+}
+
 /** Calculator for user-entered costs; missing provider fees are never inferred. */
 export function estimateRenterCosts(values) {
   const names=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront",
