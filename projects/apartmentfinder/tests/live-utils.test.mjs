@@ -84,3 +84,24 @@ test("real listing comparison does not include missing or invented listings",()=
 test("duplicate compare selection is not added twice",()=>{
  assert.deepEqual(toggleRentalComparison(["a","a"],"b").ids,["a","b"]);
 });
+
+test("living cost model includes transport, food, debt and essentials",()=>{
+ const result=estimateRenterCosts({rent:900,income:2700,utilities:150,otherMonthly:40,
+  transportation:230,groceries:300,debtPayments:120,otherEssentials:80,
+  deposit:450,applicationFee:60});
+ assert.equal(result.valid,true);
+ assert.equal(result.monthly,1090);
+ assert.equal(result.essentials,730);
+ assert.equal(result.livingTotal,1820);
+ assert.equal(result.livingRemaining,880);
+ assert.equal(result.upfront,1410);
+});
+test("living cost model reports negative cash flow without hiding it",()=>{
+ const v=estimateRenterCosts({rent:1200,income:1400,transportation:350,groceries:300});
+ assert.equal(v.livingRemaining,-450);
+ assert.equal(v.valid,true);
+});
+test("living cost model rejects negative essential expenses",()=>{
+ assert.equal(estimateRenterCosts({rent:800,income:2000,transportation:-1}).valid,false);
+ assert.equal(estimateRenterCosts({rent:800,income:2000,groceries:"invalid"}).valid,false);
+});
