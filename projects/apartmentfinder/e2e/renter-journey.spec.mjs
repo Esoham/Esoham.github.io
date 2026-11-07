@@ -97,3 +97,15 @@ test("beta feedback remains on-site until user chooses to submit",async ({page})
   await expect(page.locator("#feedback-submit-link")).toBeHidden();
   await expect(page.locator("#feedback-copy")).toBeDisabled();
 });
+
+test("full cost-of-living planner updates with transportation and groceries",async ({page})=>{
+ await page.locator("#market-grid .market-card").first().getByRole("button",{name:"Calculate my costs"}).click();
+ await page.locator("#budget-income").fill("2600");
+ await page.locator("#budget-utilities").fill("100");
+ await page.locator("#budget-transportation").fill("250");
+ await page.locator("#budget-groceries").fill("300");
+ await page.locator("#budget-debtPayments").fill("100");
+ await expect(page.locator("#budget-results")).toContainText("$1,650");
+ await expect(page.locator("#budget-results")).toContainText("$950");
+ await expect(page.locator("#budget-results")).toContainText("cash-flow estimate");
+});
