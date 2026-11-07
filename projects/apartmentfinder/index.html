@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="ApartmentFinder: an interactive educational prototype to compare rent and move-in costs using clearly labeled sample homes.">
+  <meta name="description" content="ApartmentFinder helps Atlanta renters research provider-reported rentals, save options locally and plan moving costs without guessing fees.">
   <title>ApartmentFinder — Budget-first apartment discovery</title>
   <link rel="stylesheet" href="./styles.css">
   <script type="module" src="./app.mjs"></script>
@@ -43,7 +43,7 @@
     <section class="search-shell market-shell" id="market-search" aria-labelledby="market-title">
       <div class="section-heading">
         <div><span class="eyebrow">Real rental research</span><h2 id="market-title">Explore rental listings</h2></div>
-        <p>Start with verified rental marketplaces. Our licensed data feed shows provider-reported active listings only after an authorized connection is configured.</p>
+        <p>Discover provider-reported rentals, shortlist options and estimate costs. Confirm the advertised terms with the property before applying.</p>
       </div>
       <div class="market-info">
         <strong>Browse rentals at the original source</strong>
@@ -69,8 +69,17 @@
         <div class="field"><label for="market-bedrooms">Minimum bedrooms</label>
           <select id="market-bedrooms"><option value="0">Any / unknown</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option></select></div>
       </form>
+      <div class="market-toolbar" aria-label="Rental results controls">
+        <label class="check-label"><input type="checkbox" id="market-saved-only"> Saved rentals only</label>
+        <label class="market-sort-label" for="market-sort">Sort by
+          <select id="market-sort"><option value="lowest">Lowest rent</option><option value="newest">Recently seen</option><option value="highest">Highest rent</option></select>
+        </label>
+        <button id="market-reset" type="button" class="reset-button">Clear filters</button>
+      </div>
       <p id="market-results" class="small" aria-live="polite"></p>
       <div id="market-grid" class="listing-grid" aria-label="Provider-reported rentals"></div>
+      <div class="market-more-wrap"><button id="market-more" type="button" class="secondary-button" hidden>Show more rentals</button></div>
+      <p class="small">Saved rentals remain on this device only, without an account. Provider records may disappear or change after refresh. Neighborhood links are map searches, not verified listing advertisements.</p>
       <p class="fine-print">A provider's “Active” status is not proof an individual apartment is still available. Low listed prices may apply to a single room rather than an entire home; confirm what is rented. The source may omit application fees, deposits, utilities and pet rules, so ApartmentFinder never guesses those costs for provider listings. Refreshes are periodic, not real-time.</p>
     </section>
 
