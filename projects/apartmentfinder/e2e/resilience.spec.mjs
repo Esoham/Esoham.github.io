@@ -6,7 +6,7 @@ test("outbound rental data failure keeps the demo and budget planner usable", as
   }));
   await page.goto("/");
   await expect(page.locator("#market-status")).toContainText("Rental feed unavailable");
-  await expect(page.locator("#listing-grid .listing-card")).toHaveCount(8);
+  await expect(page.locator("#listing-grid .listing-card")).toHaveCount(7); // The $1,200 default filter excludes the $1,475 sample.
   await page.locator("#budget-rent").fill("950");
   await expect(page.locator("#budget-results")).toContainText("$950");
 });
