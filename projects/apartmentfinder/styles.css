@@ -25,3 +25,36 @@
 #market-grid .compare-button{margin-top:1rem;align-self:flex-start}
 @media(max-width:850px){.budget-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.budget-results{grid-template-columns:1fr}}
+
+/* Real rental discovery: distinctive typography without fabricated photographs. */
+.market-toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin:1rem 0;padding:.85rem 1rem;border-radius:12px;background:#fff;border:1px solid #dbe7dc}
+.market-sort-label{display:flex;align-items:center;gap:.5rem;font-size:.84rem;font-weight:700;color:#486352}
+.market-sort-label select{padding:.5rem;border:1px solid #c9d8ce;border-radius:8px;max-width:170px;background:#fff}
+.market-more-wrap{text-align:center;margin:1.5rem 0}
+.market-card{border-radius:18px;transition:transform .16s ease,box-shadow .16s ease;border-color:#dbe6df}
+.market-card:hover{transform:translateY(-2px);box-shadow:0 14px 32px #1a3f251a}
+.market-card-visual{min-height:150px;padding:1rem 1.1rem;display:flex;flex-direction:column;justify-content:space-between;background:radial-gradient(circle at 88% 120%,#8cb39d 0 18%,transparent 18.5%),linear-gradient(135deg,#184c3b,#287357);color:#fff}
+.market-card:nth-child(3n+2) .market-card-visual{background:radial-gradient(circle at 88% 120%,#c4d7b0 0 18%,transparent 18.5%),linear-gradient(135deg,#264c58,#427a75)}
+.market-card:nth-child(3n) .market-card-visual{background:radial-gradient(circle at 88% 120%,#e2cba8 0 18%,transparent 18.5%),linear-gradient(135deg,#5c5545,#907450)}
+.market-card-top{display:flex;align-items:start;justify-content:space-between;gap:.5rem}
+.market-source{border-radius:40px;border:1px solid #ffffff66;background:#ffffff22;padding:.24rem .6rem;font-size:.67rem;font-weight:750;letter-spacing:.02em}
+.market-save{background:#fff;color:#215a43;border:0;border-radius:30px;padding:.35rem .7rem;font-weight:750;font-size:.76rem;min-height:34px}
+.market-save[aria-pressed="true"]{background:#f7e4e8;color:#8e234e}
+.market-hero-price{font-size:clamp(2rem,3vw,2.5rem);line-height:1.1;letter-spacing:-.05em;font-weight:850;font-variant-numeric:tabular-nums}
+.market-hero-price span{font-size:.78rem;letter-spacing:0;font-weight:500;color:#ecf6ef}
+.market-illustration-note{font-size:.66rem;opacity:.8}
+.market-card-body h3{margin:.3rem 0 .7rem;font-size:1rem;overflow-wrap:anywhere}
+.market-card-body .city{margin:0}
+.market-facts{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0 .7rem}
+.market-fact{display:inline-block;background:#eff5f1;border-radius:7px;padding:.32rem .5rem;font-size:.72rem;font-weight:650;color:#335e48}
+.market-disclosure{font-size:.76rem;color:#5d6b62;line-height:1.55;border-top:1px solid #e8eee9;padding-top:.8rem;margin-top:auto}
+.market-warning{font-size:.76rem;background:#fff6e3;color:#6b4d18;padding:.65rem;border-radius:8px;border:1px solid #f0dbac}
+.market-card-actions{display:flex;flex-direction:column;gap:.5rem;margin:.45rem 0 .8rem}
+.market-primary-action{border:1px solid #174b38;border-radius:9px;padding:.75rem .6rem;background:#1c6046;color:#fff;font-size:.83rem;font-weight:800}
+.market-primary-action:hover{background:#174b38}
+.market-secondary-action{font-size:.8rem;color:#205943;font-weight:750;text-align:center;text-decoration:underline;text-underline-offset:3px;padding:.4rem}
+.market-details{border-top:1px solid #e6eee7;padding-top:.6rem}
+.market-details summary{font-size:.79rem;font-weight:750;color:#345b45;cursor:pointer}
+.market-details p{margin:.5rem 0}
+@media(max-width:650px){.market-toolbar{align-items:stretch}.market-toolbar .reset-button{width:100%}.market-card-visual{min-height:145px}}
+@media(prefers-reduced-motion:reduce){.market-card{transition:none}.market-card:hover{transform:none}}
