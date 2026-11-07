@@ -1,0 +1,32 @@
+name: ApartmentFinder QA
+on:
+  push:
+    paths:
+      - 'projects/apartmentfinder/**'
+      - '.github/workflows/apartmentfinder-qa.yml'
+  pull_request:
+    paths:
+      - 'projects/apartmentfinder/**'
+      - '.github/workflows/apartmentfinder-qa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  unit-and-syntax:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check JavaScript syntax
+        run: |
+          node --check projects/apartmentfinder/app.mjs
+          node --check projects/apartmentfinder/live.mjs
+          node --check projects/apartmentfinder/live-utils.mjs
+          node --check projects/apartmentfinder/logic.mjs
+      - name: Run client regression tests
+        run: node --test projects/apartmentfinder/tests/*.test.mjs
