@@ -105,6 +105,7 @@ function card(home) {
     comparison = selection.ids;
     comparisonNotice = selection.limited ? "You can compare a maximum of three homes. Remove one to add another." : "";
     render();
+    document.querySelector("#compare").scrollIntoView({behavior:"smooth",block:"start"});
   });
   cardFooter.append(compareButton, node("small", "", "Illustrative estimate"));
   body.append(top, heading, details, pills, pricing, cardFooter);
