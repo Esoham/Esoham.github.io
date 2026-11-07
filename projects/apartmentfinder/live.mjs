@@ -47,66 +47,115 @@ costFields.forEach(key=>costInput(key).addEventListener("input",updateCostPlanne
 document.querySelector("#budget-form").addEventListener("submit",event=>event.preventDefault());
 updateCostPlanner();
 
+const SAVED_KEY="apartmentfinder-provider-saved-v1";
+let savedIds=new Set();
+try{
+  const fromStorage=JSON.parse(localStorage.getItem(SAVED_KEY)||"[]");
+  if(Array.isArray(fromStorage))savedIds=new Set(fromStorage.filter(id=>typeof id==="string").slice(0,300));
+}catch{}
+let visibleCount=12;
+const savedOnlyEl=document.querySelector("#market-saved-only");
+const sortEl=document.querySelector("#market-sort");
+const moreEl=document.querySelector("#market-more");
+const resetEl=document.querySelector("#market-reset");
+function saveListing(id){
+  if(savedIds.has(id))savedIds.delete(id);else savedIds.add(id);
+  try{localStorage.setItem(SAVED_KEY,JSON.stringify([...savedIds]));}catch{}
+  render();
+}
 function listingCard(item) {
-  const card = dom("article","listing-card");
-  const art = dom("div", "listing-art sage");
-  art.append(dom("span", "sample-tag", "Provider-reported rental"));
-  const body = dom("div", "card-body");
-  body.append(dom("p","city",item.city + ", GA " + (item.zip || "")));
+  const card=dom("article","listing-card market-card");
+  const art=dom("div","market-card-visual");
+  const top=dom("div","market-card-top");
+  top.append(dom("span","market-source","RentCast · reported rental"));
+  const save=dom("button","market-save",savedIds.has(item.id)?"♥ Saved":"♡ Save");
+  save.type="button";save.setAttribute("aria-pressed",String(savedIds.has(item.id)));
+  save.setAttribute("aria-label",(savedIds.has(item.id)?"Remove saved rental: ":"Save rental: ")+item.address);
+  save.addEventListener("click",()=>saveListing(item.id));
+  top.append(save);art.append(top);
+  const price=dom("div","market-hero-price",usd(item.rent));
+  price.append(dom("span",""," / month listed"));
+  art.append(price);
+  art.append(dom("span","market-illustration-note","Property photo not supplied"));
+  const body=dom("div","card-body market-card-body");
+  body.append(dom("p","city",item.city+", GA "+(item.zip||"")));
   body.append(dom("h3","",item.address));
-  body.append(dom("p","facts", (item.beds === null ? "Bedrooms not provided" : item.beds === 0 ? "Studio" : item.beds + " beds") +
-    " · " + (item.baths ?? "Bath count unavailable") + " baths" +
-    (item.sqft ? " · " + item.sqft + " sq ft" : "")));
-  const price = dom("p", "price-market", usd(item.rent) + " / month listed rent");
-  body.append(price);
-  if (hasAmbiguousRentalScope(item)) {
-    body.append(dom("p", "small", "Check rental scope: this single-family record reports one bedroom. The price may be for a room or partial property; confirm what is included."));
-  }
-  if (item.propertyType) body.append(dom("p","small","Provider property type: " + item.propertyType));
-  const lastSeenDate = new Date(item.lastSeenDate);
-  body.append(dom("p", "small", "Provider last saw listing active: " + lastSeenDate.toLocaleDateString("en-US", {year:"numeric",month:"short",day:"numeric", timeZone:"UTC"})));
-  body.append(dom("p", "small", "Deposits, application fees, utilities, pet restrictions and unit availability: not verified."));
-  if (item.officeName) body.append(dom("p","small","Listing office: " + item.officeName));
-  const website = trustedOfficeUrl(item.officeWebsite);
-  if (website) {
-    const link = dom("a","office-link","Visit listing office website ↗");
-    link.href = website;
-    link.target = "_blank";
-    link.rel = "noopener noreferrer";
-    body.append(link);
-  }
-  const plan=dom("button","compare-button","Plan costs for this rental");
+  const facts=dom("div","market-facts");
+  const factValues=[
+    item.beds===null?"Bedrooms unknown":item.beds===0?"Studio":item.beds+" bed",
+    item.baths===null?"Bathrooms unknown":item.baths+" bath",
+    item.sqft?" "+Number(item.sqft).toLocaleString("en-US")+" sq ft":null,
+    item.propertyType||null
+  ];
+  for(const value of factValues.filter(Boolean))facts.append(dom("span","market-fact",value));
+  body.append(facts);
+  if(hasAmbiguousRentalScope(item))
+    body.append(dom("p","market-warning","⚠ Rental scope needs checking: one-bedroom single-family record could refer to a room, not the whole home."));
+  const last=new Date(item.lastSeenDate).toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric",timeZone:"UTC"});
+  const trust=dom("p","market-disclosure","Provider last saw this listing active: "+last+". Current availability and all fees are unverified.");
+  body.append(trust);
+  const actions=dom("div","market-card-actions");
+  const plan=dom("button","market-primary-action","Calculate move-in cost");
   plan.type="button";
   plan.addEventListener("click",()=>{
     costInput("rent").value=item.rent;
-    document.querySelector("#budget-selected").textContent="Planning for "+item.address+". Check all other fees with the leasing office.";
+    document.querySelector("#budget-selected").textContent="Planning for "+item.address+". Confirm all other fees directly with the leasing office.";
     updateCostPlanner();
     document.querySelector("#renter-budget").scrollIntoView({behavior:"smooth",block:"start"});
   });
-  body.append(plan);
+  actions.append(plan);
+  const map=document.createElement("a");
+  map.className="market-secondary-action";map.textContent="View neighborhood ↗";
+  map.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(item.address);
+  map.rel="noopener noreferrer";map.target="_blank";
+  actions.append(map);
+  body.append(actions);
+  const details=document.createElement("details");
+  details.className="market-details";
+  const summary=document.createElement("summary");
+  summary.textContent="Details & how to verify";details.append(summary);
+  details.append(dom("p","small","Ask the leasing contact: Is this the entire unit? Is it available? What is the total rent, deposit, application fee, monthly fees and lease term?"));
+  if(item.officeName)details.append(dom("p","small","Provider-listed office: "+item.officeName));
+  const website=trustedOfficeUrl(item.officeWebsite);
+  if(website){
+    const link=document.createElement("a");
+    link.className="office-link";link.href=website;link.rel="noopener noreferrer";link.target="_blank";
+    link.textContent="Visit office website ↗ (not necessarily this property's listing)";
+    details.append(link);
+  }else details.append(dom("p","small","No direct listing-office website was supplied. Use the neighborhood link to research the address independently."));
+  body.append(details);
   card.append(art,body);
   return card;
 }
 
 function render() {
   grid.replaceChildren();
-  if (!providerReady) { countEl.textContent = ""; return; }
-  const filtered = filterProviderListings(providerItems,{
-    city: cityEl.value,
-    zip: zipEl.value,
-    propertyType: typeEl.value,
-    maxRent: maxRentEl.value,
-    minBeds: bedroomsEl.value
+  if(!providerReady){countEl.textContent="";return;}
+  let filtered=filterProviderListings(providerItems,{
+    city:cityEl.value,zip:zipEl.value,propertyType:typeEl.value,
+    maxRent:maxRentEl.value,minBeds:bedroomsEl.value
   });
-  countEl.textContent = filtered.length + " provider-reported rental" + (filtered.length === 1 ? "" : "s") + " match your filters. Showing up to 36.";
-  grid.replaceChildren(...filtered.slice(0,36).map(listingCard));
-  if (!filtered.length) grid.append(dom("p","empty-state","No provider listings match this budget. Try increasing the maximum rent or changing the city."));
+  if(savedOnlyEl.checked)filtered=filtered.filter(item=>savedIds.has(item.id));
+  if(sortEl.value==="newest")filtered.sort((a,b)=>Date.parse(b.lastSeenDate)-Date.parse(a.lastSeenDate)||a.rent-b.rent);
+  else if(sortEl.value==="highest")filtered.sort((a,b)=>b.rent-a.rent);
+  const shown=filtered.slice(0,visibleCount);
+  countEl.textContent=filtered.length+" rental records match · Showing "+shown.length+". "+savedIds.size+" saved on this device.";
+  grid.replaceChildren(...shown.map(listingCard));
+  moreEl.hidden=shown.length>=filtered.length;
+  if(!filtered.length)grid.append(dom("p","empty-state",savedOnlyEl.checked?
+    "No saved rentals match these filters. Try turning off Saved only.":"No provider listings match these filters. Try a different city or price range."));
 }
 
 for (const select of [cityEl,bedroomsEl,typeEl]) select.addEventListener("change", render);
 maxRentEl.addEventListener("input",render);
 zipEl.addEventListener("input",render);
 form.addEventListener("submit", event=>event.preventDefault());
+savedOnlyEl.addEventListener("change",()=>{visibleCount=12;render();});
+sortEl.addEventListener("change",render);
+moreEl.addEventListener("click",()=>{visibleCount+=12;render();});
+resetEl.addEventListener("click",()=>{
+  form.reset();zipEl.value="";savedOnlyEl.checked=false;sortEl.value="lowest";visibleCount=12;render();
+});
 
 async function load() {
   try {
