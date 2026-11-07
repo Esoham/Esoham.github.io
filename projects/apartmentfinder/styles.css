@@ -14,3 +14,14 @@
 .market-filters{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem;padding:1rem;background:#fff;border:1px solid #dbe7dc;border-radius:12px}
 .price-market{font-weight:800;color:#1e6447}
 @media(max-width:650px){.market-filters{grid-template-columns:1fr}}
+
+/* Renter-first private calculator */
+.budget-panel{background:#fff;border:1px solid #dbe7dc;border-radius:14px;padding:1.4rem}
+.budget-panel .market-filters{border:0;padding:0;margin:1rem 0}
+.budget-results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}
+.budget-result{display:flex;flex-direction:column;gap:.35rem;border-radius:10px;padding:1rem;background:#eaf5ed}
+.budget-result span{font-size:.78rem;color:#486352}
+.budget-result strong{font-size:1.15rem;color:#17553a}
+#market-grid .compare-button{margin-top:1rem;align-self:flex-start}
+@media(max-width:850px){.budget-results{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:480px){.budget-results{grid-template-columns:1fr}}
