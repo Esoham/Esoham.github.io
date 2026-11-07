@@ -58,3 +58,22 @@
 .market-details p{margin:.5rem 0}
 @media(max-width:650px){.market-toolbar{align-items:stretch}.market-toolbar .reset-button{width:100%}.market-card-visual{min-height:145px}}
 @media(prefers-reduced-motion:reduce){.market-card{transition:none}.market-card:hover{transform:none}}
+
+/* Complete renter research without leaving ApartmentFinder */
+.rental-detail-dialog{border:0;border-radius:18px;width:min(720px,calc(100vw - 24px));max-height:min(88vh,900px);padding:0;box-shadow:0 25px 85px #071e1855;color:#203a2b;background:#fff;overflow-y:auto}
+.rental-detail-dialog::backdrop{background:#0c261bd1;backdrop-filter:blur(3px)}
+.detail-dialog-top{position:sticky;top:0;z-index:2;display:flex;justify-content:space-between;align-items:center;background:#f0f6f1;border-bottom:1px solid #d8e7db;padding:.9rem 1.4rem;font-size:.82rem;font-weight:750}
+.detail-dialog-top button{border:1px solid #9cb9a5;background:#fff;color:#234a34;border-radius:8px;padding:.45rem .85rem}
+#rental-detail-content{padding:1.5rem}
+#rental-detail-content h2{font-size:clamp(1.4rem,3vw,2rem);line-height:1.2;margin:.7rem 0;letter-spacing:-.04em;overflow-wrap:anywhere}
+.detail-price{font-size:1.2rem;font-weight:800;color:#195a3e}
+.detail-facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem;margin:1.2rem 0}
+.detail-fact{background:#f1f6f2;border-radius:9px;padding:.8rem;display:flex;flex-direction:column;gap:.3rem;min-width:0;overflow-wrap:anywhere}
+.detail-fact span{font-size:.74rem;color:#667b6b}
+.detail-fact strong{font-size:.95rem}
+.detail-checklist{border-top:1px solid #dce8df;border-bottom:1px solid #dce8df;padding:1rem 0}
+.detail-checklist h3{margin:.25rem 0;font-size:1rem}
+.detail-checklist li{margin:.5rem 0;font-size:.88rem}
+.detail-actions{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:1.3rem 0}
+.market-secondary-button{border:1px solid #c2d7c9;border-radius:9px;padding:.7rem;background:#fff;color:#235e45;font-size:.82rem;font-weight:750}
+@media(max-width:560px){.detail-facts{grid-template-columns:1fr}#rental-detail-content{padding:1rem}.rental-detail-dialog{max-height:94vh}}
