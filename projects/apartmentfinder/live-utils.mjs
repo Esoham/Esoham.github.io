@@ -59,3 +59,20 @@ export function hasAmbiguousRentalScope(item) {
   const type = String(item?.propertyType ?? "").toLocaleLowerCase("en-US");
   return (type === "single family" || type === "single-family") && item?.beds === 1;
 }
+
+/** Calculator for user-entered costs; missing provider fees are never inferred. */
+export function estimateRenterCosts(values) {
+  const names=["rent","income","utilities","otherMonthly","deposit","applicationFee","adminFee","otherUpfront"];
+  const v={};
+  for(const name of names){
+    const raw=values[name] ?? 0;
+    if(raw === "" || !Number.isFinite(Number(raw)) || Number(raw)<0)
+      return {valid:false,error:"Enter a valid non-negative amount for "+name+"."};
+    v[name]=Number(raw);
+  }
+  if(v.rent===0) return {valid:false,error:"Enter a listed monthly rent."};
+  const monthly=v.rent+v.utilities+v.otherMonthly;
+  const upfront=v.rent+v.deposit+v.applicationFee+v.adminFee+v.otherUpfront;
+  return {valid:true,monthly,upfront,remaining:v.income>0?v.income-monthly:null,
+    rentPercent:v.income>0?100*v.rent/v.income:null};
+}
