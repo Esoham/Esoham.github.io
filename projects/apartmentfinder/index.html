@@ -15,7 +15,7 @@
     <div class="topbar-inner">
       <a class="brand" href="#top" aria-label="ApartmentFinder homepage"><span class="brand-icon" aria-hidden="true">⌂</span><span>Apartment<span class="brand-emphasis">Finder</span></span></a>
       <nav aria-label="Primary navigation">
-        <a href="#market-search">Actual rentals</a><a href="#renter-budget">Budget planner</a><a href="#search">Sample demo</a><a href="#compare">Compare</a>
+        <a href="#market-search">Actual rentals</a><a href="#renter-budget">Budget planner</a><a href="#real-compare">Compare rentals</a><a href="#search">Sample demo</a>
       </nav>
       <span class="topbar-label">Portfolio prototype</span>
     </div>
@@ -83,6 +83,22 @@
       <p class="fine-print">A provider's “Active” status is not proof an individual apartment is still available. Low listed prices may apply to a single room rather than an entire home; confirm what is rented. The source may omit application fees, deposits, utilities and pet rules, so ApartmentFinder never guesses those costs for provider listings. Refreshes are periodic, not real-time.</p>
     </section>
 
+
+    <section class="real-compare-shell" id="real-compare" aria-labelledby="real-compare-title">
+      <div class="section-heading">
+        <div><span class="eyebrow">Make a confident choice</span><h2 id="real-compare-title">Compare real rental records</h2></div>
+        <p>Select up to three provider-reported rentals. Unknown costs stay marked unknown.</p>
+      </div>
+      <p id="real-compare-status" class="compare-intro" role="status" aria-live="polite">Choose “Compare” on any real rental card above to start comparing.</p>
+      <div id="real-compare-wrap" class="table-scroll" hidden>
+        <table id="real-compare-table">
+          <caption>Provider-reported rentals: listing details and prices; availability and fees unverified</caption>
+          <thead id="real-compare-head"></thead>
+          <tbody id="real-compare-body"></tbody>
+        </table>
+      </div>
+      <button type="button" id="real-compare-clear" class="secondary-button" hidden>Clear real-rental comparison</button>
+    </section>
 
     <section class="search-shell" id="renter-budget" aria-labelledby="renter-budget-heading">
       <div class="section-heading"><div><span class="eyebrow">Renter budget planner</span><h2 id="renter-budget-heading">Know what moving will cost</h2></div><p>Choose a real rental above or enter a rent manually. No account needed.</p></div>
@@ -156,8 +172,8 @@
 
     <section class="compare-shell" id="compare" aria-labelledby="compare-title">
       <div class="section-heading">
-        <div><span class="eyebrow">Make the numbers make sense</span><h2 id="compare-title">Compare your options</h2></div>
-        <p>Choose up to 3 homes. We show estimated upfront and ongoing costs side by side.</p>
+        <div><span class="eyebrow">Try the demo</span><h2 id="compare-title">Compare fictional sample apartments</h2></div>
+        <p>This separate demo illustrates costs and does not represent actual rental offers.</p>
       </div>
       <p id="compare-instruction" class="compare-intro">Select “Compare” on a listing card to begin.</p>
       <div class="table-scroll" id="compare-table-wrap" hidden>
