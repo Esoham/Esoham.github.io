@@ -102,7 +102,7 @@
     </section>
 
     <section class="search-shell" id="renter-budget" aria-labelledby="renter-budget-heading">
-      <div class="section-heading"><div><span class="eyebrow">Renter budget planner</span><h2 id="renter-budget-heading">Know what moving will cost</h2></div><p>Choose a real rental above or enter a rent manually. No account needed.</p></div>
+      <div class="section-heading"><div><span class="eyebrow">Renter budget planner</span><h2 id="renter-budget-heading">What will life actually cost here?</h2></div><p>Choose a real rental above or enter a rent manually. No account needed.</p></div>
       <div class="budget-panel">
         <p id="budget-selected" role="status">Choose “Plan costs” on a rental listing above, or enter a monthly rent below.</p>
         <form id="budget-form" class="market-filters" aria-label="Renter monthly and move-in costs">
@@ -110,13 +110,17 @@
           <div class="field"><label for="budget-income">Monthly take-home income ($)</label><input id="budget-income" type="number" min="0" value="0"></div>
           <div class="field"><label for="budget-utilities">Utilities estimate ($/month)</label><input id="budget-utilities" type="number" min="0" value="0"></div>
           <div class="field"><label for="budget-otherMonthly">Other monthly housing costs ($)</label><input id="budget-otherMonthly" type="number" min="0" value="0"></div>
+          <div class="field"><label for="budget-transportation">Transportation / month ($)</label><input id="budget-transportation" type="number" min="0" step="1" value="0"></div>
+          <div class="field"><label for="budget-groceries">Groceries / month ($)</label><input id="budget-groceries" type="number" min="0" step="1" value="0"></div>
+          <div class="field"><label for="budget-debtPayments">Debt payments / month ($)</label><input id="budget-debtPayments" type="number" min="0" step="1" value="0"></div>
+          <div class="field"><label for="budget-otherEssentials">Other essentials / month ($)</label><input id="budget-otherEssentials" type="number" min="0" step="1" value="0"></div>
           <div class="field"><label for="budget-deposit">Security deposit ($)</label><input id="budget-deposit" type="number" min="0" value="0"></div>
           <div class="field"><label for="budget-applicationFee">Application fee ($)</label><input id="budget-applicationFee" type="number" min="0" value="0"></div>
           <div class="field"><label for="budget-adminFee">Administrative fees ($)</label><input id="budget-adminFee" type="number" min="0" value="0"></div>
           <div class="field"><label for="budget-otherUpfront">Other one-time costs ($)</label><input id="budget-otherUpfront" type="number" min="0" value="0"></div>
         </form>
         <div id="budget-results" class="budget-results" role="status" aria-live="polite"></div>
-        <p class="fine-print">All fees are user-entered. A $0 field means none entered, not confirmed free. RentCast does not supply complete fees. This planner does not save or transmit your income, and it does not assess landlord qualification. Verify rental scope, availability, lease terms and fees with the property before paying anyone.</p>
+        <p class="fine-print">All expenses and fees are user-entered, including transportation, groceries, and debt. A $0 field means none entered, not confirmed free. RentCast does not supply complete fees. This planner calculates cash flow using your monthly take-home income, not a lender's or landlord's income qualification formula. It does not save or transmit your financial entries. Leave room for savings and emergencies, and verify rent, lease terms and all fees before paying anyone.</p>
       </div>
     </section>
 
