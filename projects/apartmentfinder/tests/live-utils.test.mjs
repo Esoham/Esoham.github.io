@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts } from "../live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts, rentalReviewFlags, auditRentalSnapshot } from "../live-utils.mjs";
 const NOW = new Date("2026-11-07T13:00:00Z");
 const ITEM = {id:"a",address:"Test Address, Atlanta, GA",city:"Atlanta",state:"GA",rent:1000,beds:1,baths:1,
  lastSeenDate:"2026-11-06T12:00:00Z",status:"Active",officeWebsite:"https://example.com"};
@@ -104,4 +104,21 @@ test("living cost model reports negative cash flow without hiding it",()=>{
 test("living cost model rejects negative essential expenses",()=>{
  assert.equal(estimateRenterCosts({rent:800,income:2000,transportation:-1}).valid,false);
  assert.equal(estimateRenterCosts({rent:800,income:2000,groceries:"invalid"}).valid,false);
+});
+
+test("rental review flags never imply that an unverified record is safe",()=>{
+ const item={...ITEM,propertyType:"Single Family",beds:1,officeName:"",officeWebsite:null,listedDate:"2026-01-01T00:00:00Z"};
+ assert.deepEqual(rentalReviewFlags(item),["scope-unverified","contact-not-provided","long-running-advertisement"]);
+});
+test("well-described record has no heuristic flags but is not independently verified",()=>{
+ const item={...ITEM,propertyType:"Apartment",beds:2,officeName:"Authorized office",listedDate:"2026-11-01T00:00:00Z"};
+ assert.deepEqual(rentalReviewFlags(item),[]);
+});
+test("listing audit produces a prioritized manual review queue",()=>{
+ const bad={...ITEM,propertyType:"Single Family",beds:1,officeName:"",officeWebsite:null};
+ const good={...ITEM,id:"b",officeName:"Office",propertyType:"Apartment",beds:2};
+ const audit=auditRentalSnapshot({...sample(),items:[bad,good]},NOW);
+ assert.equal(audit.state,"ready");assert.equal(audit.total,2);
+ assert.deepEqual(audit.review.map(x=>x.id),["a"]);
+ assert.equal(audit.counts["scope-unverified"],1);
 });
