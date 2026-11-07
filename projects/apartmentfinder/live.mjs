@@ -250,7 +250,7 @@ function listingCard(item) {
 
 function render(notice="") {
   grid.replaceChildren();
-  renderRealComparison(notice);
+  renderRealComparison(typeof notice==="string"?notice:"");
   if(!providerReady){countEl.textContent="";return;}
   let filtered=filterProviderListings(providerItems,{
     city:cityEl.value,zip:zipEl.value,propertyType:typeEl.value,
