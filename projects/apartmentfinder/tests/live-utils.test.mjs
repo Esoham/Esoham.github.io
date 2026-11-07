@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts } from "../live-utils.mjs";
+import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts } from "../live-utils.mjs";
 const NOW = new Date("2026-11-07T13:00:00Z");
 const ITEM = {id:"a",address:"Test Address, Atlanta, GA",city:"Atlanta",state:"GA",rent:1000,beds:1,baths:1,
  lastSeenDate:"2026-11-06T12:00:00Z",status:"Active",officeWebsite:"https://example.com"};
@@ -67,4 +67,20 @@ test("planner rejects negative, invalid and missing rent",()=>{
 test("planner with no income avoids misleading affordability ratio",()=>{
  const v=estimateRenterCosts({rent:850,income:0});
  assert.equal(v.rentPercent,null);assert.equal(v.remaining,null);
+});
+
+test("real listings comparison adds and removes up to three choices",()=>{
+ let ids=[];
+ for(const id of ["a","b","c"]){const r=toggleRentalComparison(ids,id);assert.equal(r.limited,false);ids=r.ids;}
+ assert.deepEqual(ids,["a","b","c"]);
+ const over=toggleRentalComparison(ids,"d");
+ assert.equal(over.limited,true);assert.deepEqual(over.ids,ids);
+ assert.deepEqual(toggleRentalComparison(ids,"b").ids,["a","c"]);
+});
+test("real listing comparison does not include missing or invented listings",()=>{
+ const list=[ITEM,{...ITEM,id:"b",rent:1100}];
+ assert.deepEqual(compareRentalFacts(list,["b","missing","a"]).map(i=>i.id),["b","a"]);
+});
+test("duplicate compare selection is not added twice",()=>{
+ assert.deepEqual(toggleRentalComparison(["a","a"],"b").ids,["a","b"]);
 });
