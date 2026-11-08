@@ -7,7 +7,8 @@ Help renters find provider-reported options, understand advertised rents and *en
 - RentCast provider snapshot and stale/inactive filtering, without exposing API credentials in frontend files.
 - Real listing cards with city, rent, beds, baths, property type, provider last-seen date and clearly labeled uncertainty.
 - Rental discovery excludes potentially room-like single-family one-bedroom records by default, showing a hidden-record count and allowing renters to opt in and inspect them. The filter is heuristic and does not certify other records as whole units.
-- Search, ZIP/city/type filters, sorting, browser-only saved records and up-to-three real-rental comparison.
+- Search, ZIP/city/type filters, clickable city shortcuts, sorting, browser-only saved records, clickable price/address details and up-to-three real-rental comparison.
+- Ten planned metro Atlanta city queries rotated across two weekly refreshes at five API calls per run; only cities with current qualifying records appear as searchable areas.
 - On-site property details and renter-entered budget planning, including transportation, groceries, debt payments and other essentials; unknown fees are not guessed. The planner shows both housing costs and estimated cash remaining after entered living expenses.
 - Pre-filled **public GitHub issue** route for listing concerns; requires GitHub sign-in and is not a private or in-app ticket system.
 - On-site beta feedback form prepares and previews a report without a backend; users must explicitly copy or continue to GitHub to submit. No automatic submission is claimed.
