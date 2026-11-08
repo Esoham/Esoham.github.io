@@ -46,11 +46,20 @@ export function filterProviderListings(items, filters = {}) {
   ).sort((a,b) => a.rent - b.rent || a.id.localeCompare(b.id));
 }
 
+/** Public browser links must not open local services or credential-bearing URLs. */
 export function trustedOfficeUrl(value) {
-  if (typeof value !== "string") return null;
+  if (typeof value !== "string" || !value || value.length > 400 ||
+      /[\\u0000-\\u001f\\u007f]/.test(value)) return null;
   try {
     const parsed = new URL(value);
-    return parsed.protocol === "https:" && !parsed.username && !parsed.password ? parsed.href : null;
+    const host = parsed.hostname.toLowerCase();
+    if (parsed.protocol !== "https:" || parsed.username || parsed.password ||
+        (parsed.port && parsed.port !== "443") ||
+        !host.includes(".") || host === "localhost" ||
+        host.endsWith(".localhost") || host.endsWith(".local") ||
+        host.endsWith(".internal") || host.endsWith(".test") ||
+        /^[0-9.]+$/.test(host) || host.startsWith("[")) return null;
+    return parsed.href;
   } catch { return null; }
 }
 
