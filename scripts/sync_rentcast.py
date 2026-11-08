@@ -18,7 +18,11 @@ from pathlib import Path
 
 API_URL = "https://api.rentcast.io/v1/listings/rental/long-term"
 OUTPUT = Path(__file__).resolve().parents[1] / "projects/apartmentfinder/data/live-listings.json"
-CITIES = ("Atlanta", "College Park", "East Point", "Hapeville", "Union City")
+CITY_GROUPS = (
+    ("Atlanta", "College Park", "East Point", "Hapeville", "Union City"),
+    ("Decatur", "Smyrna", "Marietta", "Sandy Springs", "Forest Park"),
+)
+REQUESTS_PER_RUN = 5
 MAX_RESULTS_PER_CITY = 75
 MAX_AGE_DAYS = 14
 MAX_RENT = 6000  # Excludes non-rental or implausibly high records, not a user budget.
@@ -110,12 +114,36 @@ def rentcast_request(city, api_key):
             raise RuntimeError("Unexpected RentCast response type")
         return data
 
-def build_snapshot(api_key, now=None, fetch=rentcast_request):
+def cities_for_week(now):
+    """Rotate five cities weekly to expand coverage without raising request count."""
+    return CITY_GROUPS[now.isocalendar().week % len(CITY_GROUPS)]
+
+def existing_recent_records(now, old_snapshot):
+    """Retain only existing sanitized, sufficiently recent active records."""
+    if not isinstance(old_snapshot, dict) or old_snapshot.get("provider") != "RentCast":
+        return []
+    allowed_cities={city for group in CITY_GROUPS for city in group}
+    records=[]
+    for item in old_snapshot.get("items", []):
+        if not isinstance(item,dict): continue
+        last_seen=parse_date(item.get("lastSeenDate"))
+        if (item.get("status")=="Active" and item.get("city") in allowed_cities
+            and item.get("state")=="GA" and isinstance(item.get("id"),str)
+            and isinstance(item.get("address"),str)
+            and isinstance(item.get("rent"),(int,float))
+            and not isinstance(item.get("rent"),bool)
+            and 100 <= item["rent"] <= MAX_RENT
+            and last_seen and dt.timedelta(0) <= now-last_seen <= dt.timedelta(days=MAX_AGE_DAYS)):
+            records.append(item)
+    return records
+
+def build_snapshot(api_key, now=None, fetch=rentcast_request, old_snapshot=None):
     if not api_key:
         raise ValueError("RENTCAST_API_KEY is required")
     now = now or dt.datetime.now(dt.timezone.utc)
-    unique = {}
-    for city in CITIES:  # Exactly five provider calls per run.
+    cities=cities_for_week(now)
+    unique={item["id"]:item for item in existing_recent_records(now,old_snapshot)}
+    for city in cities:  # Exactly five provider calls per weekly run.
         records = fetch(city, api_key)
         for raw in records:
             normalized = normalize_record(raw, now)
@@ -130,7 +158,9 @@ def build_snapshot(api_key, now=None, fetch=rentcast_request):
         "status": "ready",
         "retrievedAt": now.isoformat().replace("+00:00", "Z"),
         "lastSeenMaxAgeDays": MAX_AGE_DAYS,
-        "queryCities": list(CITIES),
+        "queryCities": list(cities),
+        "coverageCities": sorted({item["city"] for item in unique.values()}),
+        "plannedCityGroups": [list(group) for group in CITY_GROUPS],
         "notice": "Provider-reported active rentals, not verified unit availability. Rents and fees may change; confirm with the leasing contact.",
         "items": sorted(unique.values(), key=lambda item: (item["rent"], item["city"], item["id"]))
     }
@@ -141,12 +171,18 @@ def main():
         print("RENTCAST_API_KEY missing; no API requests made. Add GitHub Actions secret to activate.")
         return 2
     try:
-        snapshot = build_snapshot(key)
+        old_snapshot=None
+        if OUTPUT.exists():
+            try:
+                old_snapshot=json.loads(OUTPUT.read_text(encoding="utf-8"))
+            except (json.JSONDecodeError, OSError):
+                old_snapshot=None
+        snapshot = build_snapshot(key, old_snapshot=old_snapshot)
         OUTPUT.parent.mkdir(parents=True, exist_ok=True)
         temp = OUTPUT.with_suffix(".tmp")
         temp.write_text(json.dumps(snapshot, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         temp.replace(OUTPUT)
-        print(f"Updated normalized rental snapshot: {len(snapshot['items'])} provider-reported active records from {len(CITIES)} city queries.")
+        print(f"Updated normalized rental snapshot: {len(snapshot['items'])} provider-reported active records from {REQUESTS_PER_RUN} city queries.")
         return 0
     except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, json.JSONDecodeError, ValueError, RuntimeError) as exc:
         # Do not log API key or third-party raw response bodies.
