@@ -121,8 +121,30 @@ test("uncertain rental scope is visibly disclosed without claiming fraud",async 
   }]})
  }));
  await page.reload();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(0);
+ await expect(page.locator("#market-ambiguity-note")).toContainText("1 potentially shared/room rental records hidden");
+ await page.locator("#market-exclude-ambiguous").uncheck();
  const card=page.locator("#market-grid .market-card").first();
  await expect(card).toContainText("Rental scope unverified");
  await expect(card).toContainText("Direct listing contact not provided");
  await expect(card).not.toContainText("verified entire unit");
+});
+
+test("renter can include ambiguous listings and reset back to the safer default",async ({page})=>{
+ const now=new Date().toISOString();
+ await page.route("**/data/live-listings.json",route=>route.fulfill({
+  status:200,contentType:"application/json",
+  body:JSON.stringify({provider:"RentCast",status:"ready",retrievedAt:now,items:[
+   {id:"room-risk",address:"1 Example Lane, Atlanta, GA",city:"Atlanta",state:"GA",zip:"30312",rent:600,beds:1,baths:1,propertyType:"Single Family",status:"Active",lastSeenDate:now},
+   {id:"apartment",address:"2 Example Lane, Atlanta, GA",city:"Atlanta",state:"GA",zip:"30312",rent:900,beds:1,baths:1,propertyType:"Apartment",status:"Active",lastSeenDate:now}
+  ]})
+ }));
+ await page.reload();
+ await expect(page.locator("#market-exclude-ambiguous")).toBeChecked();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(1);
+ await page.locator("#market-exclude-ambiguous").uncheck();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(2);
+ await page.locator("#market-reset").click();
+ await expect(page.locator("#market-exclude-ambiguous")).toBeChecked();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(1);
 });
