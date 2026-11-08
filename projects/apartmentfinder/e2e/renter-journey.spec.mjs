@@ -148,3 +148,25 @@ test("renter can include ambiguous listings and reset back to the safer default"
  await expect(page.locator("#market-exclude-ambiguous")).toBeChecked();
  await expect(page.locator("#market-grid .market-card")).toHaveCount(1);
 });
+
+test("sourced room rental displays the original public description and clear limitations",async ({page})=>{
+ const now=new Date().toISOString();
+ await page.route("**/data/live-listings.json",route=>route.fulfill({
+  status:200,contentType:"application/json",
+  body:JSON.stringify({provider:"RentCast",status:"ready",retrievedAt:now,items:[{
+   id:"3865-Cypress-Pointe-Dr,-Union-City,-GA-30291",
+   address:"3865 Cypress Pointe Dr, Union City, GA 30291",city:"Union City",state:"GA",zip:"30291",
+   rent:600,beds:1,baths:1,propertyType:"Single Family",status:"Active",lastSeenDate:now
+  }]})
+ }));
+ await page.reload();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(0);
+ await page.locator("#market-exclude-ambiguous").uncheck();
+ const card=page.locator("#market-grid .market-card").first();
+ await expect(card).toContainText("External listing identifies room rental");
+ const link=card.getByRole("link",{name:/Read source: Zillow/});
+ await expect(link).toHaveAttribute("href",/zillow\.com\/homedetails/);
+ await expect(card).toContainText("current price and availability remain unverified");
+ await card.getByRole("button",{name:"View full details"}).click();
+ await expect(page.locator("#rental-detail-content")).toContainText("External listing identifies room rental");
+});
