@@ -29,6 +29,8 @@ jobs:
           node --check projects/apartmentfinder/feedback.mjs
           node --check projects/apartmentfinder/live-utils.mjs
           node --check projects/apartmentfinder/logic.mjs
+      - name: Test rental data adapter without API requests
+        run: python3 -m unittest discover -s scripts -p 'test_sync_rentcast.py' -v
       - name: Run client regression tests
         run: node --test projects/apartmentfinder/tests/*.test.mjs
       - name: Generate non-verification rental quality report
