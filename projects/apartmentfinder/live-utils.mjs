@@ -49,7 +49,7 @@ export function filterProviderListings(items, filters = {}) {
 /** Public browser links must not open local services or credential-bearing URLs. */
 export function trustedOfficeUrl(value) {
   if (typeof value !== "string" || !value || value.length > 400 ||
-      /[\\u0000-\\u001f\\u007f]/.test(value)) return null;
+      /[\u0000-\u001f\u007f]/.test(value)) return null;
   try {
     const parsed = new URL(value);
     const host = parsed.hostname.toLowerCase();
