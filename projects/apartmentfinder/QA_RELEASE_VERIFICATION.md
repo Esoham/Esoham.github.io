@@ -50,6 +50,13 @@
 9. Inspect Network tab: no RentCast key in browser requests, and external links open securely.
 10. Check mobile 320px viewport, 200% zoom and a screen reader. Capture only non-sensitive screenshots.
 
+## Release tooling added in final pass
+- Added `scripts/check_apartmentfinder_live.py` to fetch deployed GitHub Pages HTML, required UI controls, CSP meta, JavaScript/CSS assets and the public RentCast snapshot from a network-enabled runner.
+- Added a **manual** read-only workflow: [ApartmentFinder deployed-site smoke](https://github.com/Esoham/Esoham.github.io/actions/workflows/apartmentfinder-release-smoke.yml). Run it after GitHub Pages has deployed the intended changes.
+- The development environment cannot resolve `esoham.github.io`; the public website could not be reached with an independent web lookup either. The GitHub connector's commit-status lookup returned zero statuses, and its workflow-run endpoint returns only pull-request runs. **Neither is proof of CI success or failure.**
+- The new workflow has been committed but has not been triggered or observed as passing in this review.
+- To finish sign-off, record a green run of both [ApartmentFinder QA](https://github.com/Esoham/Esoham.github.io/actions/workflows/apartmentfinder-qa.yml) and the deployed-site smoke workflow, verify deployment/source revision parity, then record desktop/mobile browser and accessibility results.
+
 ## Release decision rule
 Sign off only after recording actual run URL/commit, results, risk acceptance, accessibility status and independent provider data checks. **Do not report a completed deployment test solely because the code or test suite exists.**
 
