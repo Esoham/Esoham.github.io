@@ -13,13 +13,14 @@ Help renters find provider-reported options, understand advertised rents and *en
 - On-site beta feedback form prepares and previews a report without a backend; users must explicitly copy or continue to GitHub to submit. No automatic submission is claimed.
 - Node regression tests and Playwright desktop/mobile journeys via GitHub Actions.
 - Automated **manual-review queue** for provider records with questionable rental scope, absent listing-office details, or long-running advertisements; the flags do not constitute independent verification.
+- Nine checked public listing descriptions are linked in on-site research notes, with explicit room-rental evidence and date; this does **not** validate current rent, availability, office contact, ownership or lease terms.
 
 ## Required release gates before inviting real users
 - [ ] Confirm latest `ApartmentFinder QA` run passes *after* the most recent commit. Previously passing tests do not establish later changes pass.
 - [ ] Check GitHub Pages deployment for the same commit and manually verify real provider data on a phone and desktop.
 - [ ] Verify the ApartmentFinder GitHub repository accepts Issues; the current form prepares feedback locally but cannot privately accept submissions. Add a privacy-preserving backend/form provider and data handling notice before broad launch.
 - [ ] Review RentCast plan, attribution and permitted public display before advertising widely.
-- [ ] Use the listing-quality report artifact to prioritize 10–20 provider-reported records, then check them against legitimate property offices or official listing sources. Record any stale, misleading or room-only rent anomalies. Do **not** contact tenants or collect their private information.
+- [ ] Continue manual verification beyond the first nine scope checks; contact authorized property offices and reconcile prices, availability and fees before broad beta promotion. Public web listings alone are not verification of those facts. Record any stale, misleading or room-only rent anomalies. Do **not** contact tenants or collect their private information.
 - [ ] Run accessibility checks: keyboard-only flows, modal focus, zoom, contrast, screen readers and narrow mobile devices.
 - [ ] Publish plain-English privacy / contact / limitation notices before collecting renter feedback. Avoid collecting SSNs, lease applications, passwords or payment information.
 - [ ] Recruit 5–10 opt-in Atlanta renters using [BETA_USABILITY_STUDY.md](./BETA_USABILITY_STUDY.md) for observed, voluntary usability sessions. Avoid storing their financial figures or addresses.
