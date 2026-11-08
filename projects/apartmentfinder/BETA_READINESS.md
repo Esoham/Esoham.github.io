@@ -18,6 +18,14 @@ Help renters find provider-reported options, understand advertised rents and *en
 - Automated **manual-review queue** for provider records with questionable rental scope, absent listing-office details, or long-running advertisements; the flags do not constitute independent verification.
 - Nine checked public listing descriptions are linked in on-site research notes, with explicit room-rental evidence and date; this does **not** validate current rent, availability, office contact, ownership or lease terms.
 
+## QA evidence package
+- [QA Test Plan](./QA_TEST_PLAN.md) — scope, risk-based test strategy, entry/exit criteria, and defect severity.
+- [Requirements Traceability Matrix](./QA_TRACEABILITY_MATRIX.md) — 15 feature/security requirements mapped to automated tests and manual checks.
+- [Release Verification Record](./QA_RELEASE_VERIFICATION.md) — observed evidence, unverified checks and production smoke-test checklist.
+- [Security Review](./SECURITY_REVIEW.md) — threat model, hardened controls and remaining risks.
+
+**Important:** A test existing in source code is not the same as a verified passing run or a successful production deployment.
+
 ## Required release gates before inviting real users
 - [ ] Confirm latest `ApartmentFinder QA` run passes *after* the most recent commit. Previously passing tests do not establish later changes pass.
 - [ ] Review security audit results, browser CSP console output and the repo owner's security settings. This is not a penetration test.
