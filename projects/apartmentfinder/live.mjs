@@ -199,7 +199,13 @@ function openRentalDetails(item){
  const title=dom("h2","",item.address);
  title.id="rental-detail-title";
  detailContent.append(dom("p","eyebrow","ApartmentFinder · Provider-reported listing"),title);
- detailContent.append(dom("p","detail-price",usd(item.rent)+" per month · advertised rent only"));
+ const hero=dom("div","detail-hero");
+ const mainPrice=dom("div","detail-hero-rent");
+ mainPrice.append(dom("span","","Advertised monthly rent"),dom("strong","",usd(item.rent)),dom("small","","RentCast-reported; fees unknown"));
+ const heroStatus=dom("div","detail-hero-status");
+ heroStatus.append(dom("span","detail-status-pill","Not independently verified"));
+ heroStatus.append(dom("p","","Provider last reported active: "+new Date(item.lastSeenDate).toLocaleDateString("en-US",{dateStyle:"medium",timeZone:"UTC"})));
+ hero.append(mainPrice,heroStatus);detailContent.append(hero);
  detailContent.append(dom("p","market-disclosure",
    "Reported active by RentCast. This is not a verified offer, application or lease. Confirm details directly with a property representative."));
  const facts=dom("div","detail-facts");
@@ -214,6 +220,11 @@ function openRentalDetails(item){
  ];
  listingFacts.forEach(([k,v])=>facts.append(makeFact(k,v)));
  detailContent.append(facts);
+ const expenseSection=dom("section","detail-cost-snapshot");
+ expenseSection.append(dom("h3","","What would this rental actually cost?"));
+ expenseSection.append(dom("p","","Known advertised rent: "+usd(item.rent)+"/month. Deposit, required fees, utilities, parking, and lease terms are not supplied or independently verified for this record."));
+ const costHint=dom("p","small","Use the budget planner to add your own estimates before contacting a property representative.");
+ expenseSection.append(costHint);detailContent.append(expenseSection);
  const detailEvidence=researchEvidence(item);
  if(detailEvidence)detailContent.append(detailEvidence);
  if(hasAmbiguousRentalScope(item))
@@ -236,6 +247,31 @@ function openRentalDetails(item){
   document.querySelector("#renter-budget").scrollIntoView({behavior:"smooth",block:"start"});
  });
  actions.append(plan);
+ const save=dom("button","market-secondary-button",savedIds.has(item.id)?"♥ Saved — remove":"♡ Save rental");
+ save.type="button";
+ save.setAttribute("aria-pressed",String(savedIds.has(item.id)));
+ save.addEventListener("click",()=>{
+   saveListing(item.id);
+   save.textContent=savedIds.has(item.id)?"♥ Saved — remove":"♡ Save rental";
+   save.setAttribute("aria-pressed",String(savedIds.has(item.id)));
+ });
+ actions.append(save);
+ const compare=dom("button","market-secondary-button",realComparison.includes(item.id)?"✓ Remove comparison":"+ Compare rental");
+ compare.type="button";
+ compare.setAttribute("aria-pressed",String(realComparison.includes(item.id)));
+ compare.addEventListener("click",()=>{
+   const result=toggleRentalComparison(realComparison,item.id);
+   realComparison=result.ids;
+   render(result.limited?"You can compare up to three rentals. Remove one before adding another.":"");
+   compare.textContent=realComparison.includes(item.id)?"✓ Remove comparison":"+ Compare rental";
+   compare.setAttribute("aria-pressed",String(realComparison.includes(item.id)));
+   if(!result.limited){detailDialog.close();document.querySelector("#real-compare").scrollIntoView({behavior:"smooth",block:"start"});}
+ });
+ actions.append(compare);
+ const neighborhood=dom("a","market-secondary-action","Explore neighborhood map ↗");
+ neighborhood.href="https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(item.address);
+ neighborhood.target="_blank";neighborhood.rel="noopener noreferrer";
+ actions.append(neighborhood);
  const office=trustedOfficeUrl(item.officeWebsite);
  if(office){
   const a=dom("a","market-secondary-action","Contact listing office website ↗");
