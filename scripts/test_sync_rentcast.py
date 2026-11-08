@@ -53,6 +53,13 @@ class RentCastIngestTests(unittest.TestCase):
         item = r.normalize_record(example(listingOffice={"name": "Test", "website": "javascript:alert(1)"}), NOW)
         self.assertIsNone(item["officeWebsite"])
 
+    def test_rejects_unsafe_listing_office_endpoints(self):
+        for bad in ("http://example.com", "https://localhost/", "https://127.0.0.1/",
+                    "https://[::1]/", "https://admin.internal/", "https://staff.local/",
+                    "https://user:pass@example.com/", "https://example.com:8443/"):
+            self.assertIsNone(r.safe_website(bad), bad)
+        self.assertEqual(r.safe_website("https://leasing.example.com/"), "https://leasing.example.com/")
+
     def test_does_not_guess_optional_size_or_bedrooms(self):
         item = r.normalize_record(example(bedrooms=None, bathrooms=None, squareFootage=None), NOW)
         self.assertIsNone(item["beds"])
