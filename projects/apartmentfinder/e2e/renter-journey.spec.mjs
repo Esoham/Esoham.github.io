@@ -170,3 +170,28 @@ test("sourced room rental displays the original public description and clear lim
  await card.getByRole("button",{name:"View full details"}).click();
  await expect(page.locator("#rental-detail-content")).toContainText("External listing identifies room rental");
 });
+
+test("city shortcuts are clickable, filter real rentals and stay synchronized",async ({page})=>{
+ const shortcuts=page.locator("#market-city-shortcuts");
+ await expect(shortcuts.getByRole("button",{name:"Atlanta"})).toBeVisible();
+ await shortcuts.getByRole("button",{name:"College Park"}).click();
+ await expect(page.locator("#market-city")).toHaveValue("College Park");
+ await expect(shortcuts.getByRole("button",{name:"College Park"})).toHaveAttribute("aria-pressed","true");
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(1);
+ await page.locator("#market-city").selectOption("Atlanta");
+ await expect(shortcuts.getByRole("button",{name:"Atlanta"})).toHaveAttribute("aria-pressed","true");
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(3);
+ await page.locator("#market-reset").click();
+ await expect(shortcuts.getByRole("button",{name:"All areas"})).toHaveAttribute("aria-pressed","true");
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(4);
+});
+
+test("mobile navigation remains visible and functional",async ({page,isMobile})=>{
+ if(!isMobile)test.skip();
+ const nav=page.getByRole("navigation",{name:"Primary navigation"});
+ await expect(nav).toBeVisible();
+ await expect(nav.getByRole("link",{name:"Actual rentals"})).toBeVisible();
+ await expect(nav.getByRole("link",{name:"Compare rentals"})).toBeVisible();
+ await nav.getByRole("link",{name:"Actual rentals"}).click();
+ await expect(page).toHaveURL(/#market-search$/);
+});
