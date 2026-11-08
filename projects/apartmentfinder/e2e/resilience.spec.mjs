@@ -52,3 +52,21 @@ test("real property details dialog responds to Escape",async ({page})=>{
   await page.keyboard.press("Escape");
   await expect(page.locator("#rental-detail-dialog")).toBeHidden();
 });
+
+test("provider-supplied markup remains inert text instead of executable HTML",async ({page})=>{
+ const now=new Date().toISOString();
+ await page.route("**/data/live-listings.json",route=>route.fulfill({
+   status:200,contentType:"application/json",
+   body:JSON.stringify({provider:"RentCast",status:"ready",retrievedAt:now,
+     items:[{id:"hostile-fixture",address:'<img src=x onerror="window.__injected=true">, Atlanta, GA',
+       city:"Atlanta",state:"GA",zip:"30312",rent:900,beds:1,baths:1,
+       propertyType:"Apartment",status:"Active",lastSeenDate:now}]})
+ }));
+ await page.goto("/");
+ const card=page.locator("#market-grid .market-card").first();
+ await expect(card).toContainText("<img src=x onerror=");
+ await expect(card.locator("img")).toHaveCount(0);
+ await card.getByRole("button",{name:"View full details"}).click();
+ await expect(page.locator("#rental-detail-dialog img")).toHaveCount(0);
+ expect(await page.evaluate(()=>window.__injected===true)).toBe(false);
+});
