@@ -231,3 +231,26 @@ test("property details expose the actual verification caveat, costs and actions"
  await expect(dialog).toBeHidden();
  await expect(page.locator("#real-compare-head th")).toHaveCount(2);
 });
+
+test("keyboard users can reach real-rental search and operate property details",async ({page})=>{
+  await page.keyboard.press("Tab");
+  await expect(page.locator(".skip-link")).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(page).toHaveURL(/#market-search$/);
+  const details=page.locator("#market-grid .market-card").first().getByRole("button",{name:"View full details"});
+  await details.focus();
+  await page.keyboard.press("Enter");
+  const dialog=page.getByRole("dialog",{name:/100 Sample Street/});
+  await expect(dialog).toBeVisible();
+  await expect(page.getByRole("button",{name:"Close property details"})).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+});
+
+test("planned metro cities disclose the difference between configured and loaded inventory",async ({page})=>{
+  await expect(page.locator("#market-coverage-note")).toContainText("currently have provider records");
+  await expect(page.locator("#market-city option[value='Sandy Springs']")).toContainText("awaiting listings");
+  await page.locator("#market-city").selectOption("Forest Park");
+  await expect(page.locator("#market-results")).toContainText("0 rental records match");
+  await expect(page.locator("#market-grid")).toContainText("don't yet have a sufficiently recent licensed listing");
+});
