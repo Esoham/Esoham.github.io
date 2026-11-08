@@ -6,6 +6,7 @@ Help renters find provider-reported options, understand advertised rents and *en
 ## Completed implementation
 - RentCast provider snapshot and stale/inactive filtering, without exposing API credentials in frontend files.
 - Real listing cards with city, rent, beds, baths, property type, provider last-seen date and clearly labeled uncertainty.
+- Rental discovery excludes potentially room-like single-family one-bedroom records by default, showing a hidden-record count and allowing renters to opt in and inspect them. The filter is heuristic and does not certify other records as whole units.
 - Search, ZIP/city/type filters, sorting, browser-only saved records and up-to-three real-rental comparison.
 - On-site property details and renter-entered budget planning, including transportation, groceries, debt payments and other essentials; unknown fees are not guessed. The planner shows both housing costs and estimated cash remaining after entered living expenses.
 - Pre-filled **public GitHub issue** route for listing concerns; requires GitHub sign-in and is not a private or in-app ticket system.
