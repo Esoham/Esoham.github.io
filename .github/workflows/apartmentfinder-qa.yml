@@ -37,7 +37,7 @@ jobs:
         run: node projects/apartmentfinder/scripts/audit-listings.mjs
       - name: Upload rental review queue
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: apartmentfinder-listing-review-queue
           path: projects/apartmentfinder/listing-quality-report.md
@@ -65,7 +65,7 @@ jobs:
         run: npm run test:e2e
       - name: Upload failure traces and report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: apartmentfinder-playwright-report
           path: |
