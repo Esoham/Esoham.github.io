@@ -1,0 +1,25 @@
+name: ApartmentFinder deployed-site smoke
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deployed-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check deployed GitHub Pages content and assets
+        run: python3 scripts/check_apartmentfinder_live.py
+      - name: Explain scope of result
+        if: always()
+        run: |
+          echo "### Deployment verification scope" >> "$GITHUB_STEP_SUMMARY"
+          echo "This workflow tests publicly served HTML, key JS/CSS assets, CSP meta and the provider JSON." >> "$GITHUB_STEP_SUMMARY"
+          echo "It does not verify a deployed SHA, full browser UX, property availability or an independent penetration test." >> "$GITHUB_STEP_SUMMARY"
+          echo "Run ApartmentFinder QA separately and compare the Pages deployment to the intended source commit." >> "$GITHUB_STEP_SUMMARY"
