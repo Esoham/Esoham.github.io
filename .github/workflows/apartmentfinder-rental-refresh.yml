@@ -1,7 +1,7 @@
 name: Refresh authorized RentCast rental listings
 on:
   schedule:
-    # 5 requests per run, roughly 20–25 per calendar month before manual runs.
+    # Rotate two five-city groups weekly; 5 requests per run, roughly 20–25 per month.
     - cron: '17 12 * * 0'
   workflow_dispatch:
 
