@@ -6,6 +6,8 @@ test("outbound rental data failure keeps the demo and budget planner usable", as
   }));
   await page.goto("/");
   await expect(page.locator("#market-status")).toContainText("Rental feed unavailable");
+  await expect(page.locator("#market-results")).toContainText("No current rental records");
+  await expect(page.locator("#market-coverage-note")).toContainText("could not be loaded");
   await expect(page.locator("#listing-grid .listing-card")).toHaveCount(7); // The $1,200 default filter excludes the $1,475 sample.
   await page.locator("#budget-rent").fill("950");
   await expect(page.locator("#budget-results")).toContainText("$950");
@@ -19,7 +21,8 @@ test("stale rentals are hidden instead of misrepresented as currently active", a
         lastSeenDate:"2020-01-01T00:00:00Z"}]})
   }));
   await page.goto("/");
-  await expect(page.locator("#market-status")).toContainText("too old to display");
+  await expect(page.locator("#market-status")).toContainText("snapshot has expired");
+  await expect(page.locator("#market-results")).toContainText("No current rental records");
   await expect(page.locator("#market-grid .market-card")).toHaveCount(0);
 });
 
