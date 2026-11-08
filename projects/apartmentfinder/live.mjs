@@ -26,7 +26,7 @@ function refreshCityShortcuts() {
     const button=dom("button","city-shortcut",label);
     button.type="button";button.dataset.city=name;
     button.setAttribute("aria-pressed",String(cityEl.value===name));
-    button.setAttribute("aria-label",name?(name+(count?" — provider records available":" — awaiting rental records")):"All planned areas");
+    button.setAttribute("aria-label",name?(name+(count?" — provider records available":" — awaiting rental records")):"All areas");
     if(name&&!available.has(name))button.classList.add("city-awaiting");
     button.addEventListener("click",()=>setCity(name));
     shortcutWrap.append(button);
