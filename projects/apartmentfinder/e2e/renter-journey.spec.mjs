@@ -204,3 +204,30 @@ test("address and price open the on-site property dialog",async ({page})=>{
  await card.getByRole("button",{name:/View rental details for 100 Sample Street/}).click();
  await expect(page.locator("#rental-detail-dialog")).toBeVisible();
 });
+
+test("all ten metro areas are selectable and empty cities explain missing data",async ({page})=>{
+ const cities=["Atlanta","College Park","East Point","Hapeville","Union City","Decatur","Smyrna","Marietta","Sandy Springs","Forest Park"];
+ for(const city of cities)await expect(page.locator("#market-city option").filter({hasText:city})).toHaveCount(1);
+ await page.locator("#market-city").selectOption("Sandy Springs");
+ await expect(page.locator("#market-grid")).toContainText("We're expanding into Sandy Springs");
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(0);
+ await page.locator("#market-grid").getByRole("button",{name:"Explore all areas"}).click();
+ await expect(page.locator("#market-grid .market-card")).toHaveCount(4);
+ await page.locator("#market-city-shortcuts").getByRole("button",{name:/Forest Park/}).click();
+ await expect(page.locator("#market-grid")).toContainText("We're expanding into Forest Park");
+});
+
+test("property details expose the actual verification caveat, costs and actions",async ({page})=>{
+ await page.locator("#market-grid .market-card").first().getByRole("button",{name:"View full details"}).click();
+ const dialog=page.locator("#rental-detail-dialog");
+ await expect(dialog).toContainText("Advertised monthly rent");
+ await expect(dialog).toContainText("Not independently verified");
+ await expect(dialog).toContainText("fees unknown");
+ await expect(dialog).toContainText("What would this rental actually cost?");
+ await dialog.getByRole("button",{name:/Save rental/}).click();
+ await expect(dialog.getByRole("button",{name:/Saved/})).toHaveAttribute("aria-pressed","true");
+ await expect(dialog.getByRole("link",{name:/Explore neighborhood map/})).toHaveAttribute("href",/maps\/search/);
+ await dialog.getByRole("button",{name:/Compare rental/}).click();
+ await expect(dialog).toBeHidden();
+ await expect(page.locator("#real-compare-head th")).toHaveCount(2);
+});
