@@ -5,6 +5,28 @@ const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
 const countEl = document.querySelector("#market-results");
 const cityEl = document.querySelector("#market-city");
+const shortcutWrap = document.querySelector("#market-city-shortcuts");
+const coverageNote = document.querySelector("#market-coverage-note");
+function setCity(value) {
+  cityEl.value=value;
+  visibleCount=12;
+  render();
+  document.querySelector("#market-grid").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function refreshCityShortcuts() {
+  const names=[...new Set(providerItems.map(item=>item.city))].sort((a,b)=>a.localeCompare(b));
+  shortcutWrap.replaceChildren();
+  for (const name of ["",...names]) {
+    const button=dom("button","city-shortcut",name||"All areas");
+    button.type="button";
+    button.dataset.city=name;
+    button.setAttribute("aria-pressed",String(cityEl.value===name));
+    button.addEventListener("click",()=>setCity(name));
+    shortcutWrap.append(button);
+  }
+  coverageNote.textContent="Showing records from "+names.length+" currently covered cities: "+names.join(", ")+". Other metro areas are not included in this snapshot.";
+}
+
 const maxRentEl = document.querySelector("#market-max-rent");
 const bedroomsEl = document.querySelector("#market-bedrooms");
 const zipEl = document.querySelector("#market-zip");
@@ -310,6 +332,8 @@ function listingCard(item) {
 }
 
 function render(notice="") {
+  for(const button of shortcutWrap.querySelectorAll(".city-shortcut"))
+    button.setAttribute("aria-pressed",String(button.dataset.city===cityEl.value));
   grid.replaceChildren();
   renderRealComparison(typeof notice==="string"?notice:"");
   if(!providerReady){countEl.textContent="";return;}
@@ -352,11 +376,11 @@ async function load() {
     const payload = await response.json();
     const result = validateSnapshot(payload);
     if (result.state === "not_configured") {
-      statusEl.textContent = "Live rental-data connection is not activated yet. Use the marketplace links above to browse current listings.";
+      statusEl.textContent = "Rental feed is not connected yet. See the independent marketplace options below.";
       return;
     }
     if (result.state === "stale") {
-      statusEl.textContent = "The last licensed listing snapshot is too old to display. Visit the rental marketplace links above for current availability.";
+      statusEl.textContent = "The authorized rental snapshot has expired. No stale rentals are displayed. See the other marketplace options below while the feed refreshes.";
       return;
     }
     if (result.state === "empty") {
@@ -375,6 +399,7 @@ async function load() {
       option.value = city;
       cityEl.append(option);
     }
+    refreshCityShortcuts();
     for (const type of [...new Set(providerItems.map(x=>x.propertyType).filter(Boolean))].sort()) {
       const option = dom("option","",type);
       option.value = type;
@@ -382,7 +407,7 @@ async function load() {
     }
     render();
   } catch {
-    statusEl.textContent = "Rental feed unavailable. You can still browse current rental marketplace listings using the external links above.";
+    statusEl.textContent = "Rental feed unavailable. You can still use the budget planner or browse external marketplaces in the fallback section.";
   }
 }
 load();
