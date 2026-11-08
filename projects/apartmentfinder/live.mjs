@@ -13,18 +13,26 @@ function setCity(value) {
   render();
   document.querySelector("#market-grid").scrollIntoView({behavior:"smooth",block:"start"});
 }
+const PLANNED_CITIES=["Atlanta","College Park","Decatur","East Point","Forest Park","Hapeville","Marietta","Sandy Springs","Smyrna","Union City"];
 function refreshCityShortcuts() {
-  const names=[...new Set(providerItems.map(item=>item.city))].sort((a,b)=>a.localeCompare(b));
+  const available=new Set(providerItems.map(item=>item.city));
   shortcutWrap.replaceChildren();
-  for (const name of ["",...names]) {
-    const button=dom("button","city-shortcut",name||"All areas");
-    button.type="button";
-    button.dataset.city=name;
+  cityEl.replaceChildren();
+  for (const name of ["",...PLANNED_CITIES]) {
+    const count=name?providerItems.filter(item=>item.city===name).length:providerItems.length;
+    const label=name||"All areas";
+    const option=dom("option","",name?name+(count?"":" — awaiting listings"):"All planned areas");
+    option.value=name;cityEl.append(option);
+    const button=dom("button","city-shortcut",label);
+    button.type="button";button.dataset.city=name;
     button.setAttribute("aria-pressed",String(cityEl.value===name));
+    button.setAttribute("aria-label",name?(name+(count?" — provider records available":" — awaiting rental records")):"All planned areas");
+    if(name&&!available.has(name))button.classList.add("city-awaiting");
     button.addEventListener("click",()=>setCity(name));
     shortcutWrap.append(button);
   }
-  coverageNote.textContent="Showing records from "+names.length+" currently covered cities: "+names.join(", ")+". Other metro areas are not included in this snapshot.";
+  const count=[...available].filter(name=>PLANNED_CITIES.includes(name)).length;
+  coverageNote.textContent="Search all 10 planned metro Atlanta areas. "+count+" currently have provider records; cities marked “awaiting listings” will show results after their next successful data refresh.";
 }
 
 const maxRentEl = document.querySelector("#market-max-rent");
@@ -361,8 +369,19 @@ function render(notice="") {
   countEl.textContent=filtered.length+" rental records match · Showing "+shown.length+". "+savedIds.size+" saved on this device.";
   grid.replaceChildren(...shown.map(listingCard));
   moreEl.hidden=shown.length>=filtered.length;
-  if(!filtered.length)grid.append(dom("p","empty-state",savedOnlyEl.checked?
-    "No saved rentals match these filters. Try turning off Saved only.":"No provider listings match these filters. Try a different city or price range."));
+  if(!filtered.length){
+    const none=dom("div","empty-state market-empty");
+    const hasCity=cityEl.value;
+    const recordsForCity=providerItems.some(item=>item.city===hasCity);
+    none.append(dom("h3","",hasCity&&!recordsForCity?"We're expanding into "+hasCity:"No matching rentals right now"));
+    none.append(dom("p","",hasCity&&!recordsForCity?
+      "This city is on our coverage list, but we don't yet have a sufficiently recent licensed listing for it. We won't substitute invented rentals.":
+      "Try increasing the rent limit, changing filters, or choosing another city."));
+    const clear=dom("button","market-secondary-button","Explore all areas");
+    clear.type="button";clear.addEventListener("click",()=>{cityEl.value="";maxRentEl.value="";savedOnlyEl.checked=false;render();});
+    none.append(clear);
+    grid.append(none);
+  }
 }
 
 for (const select of [cityEl,bedroomsEl,typeEl]) select.addEventListener("change", render);
@@ -378,7 +397,8 @@ resetEl.addEventListener("click",()=>{
 });
 
 function markFeedUnavailable(message){
-  coverageNote.textContent=message;
+  refreshCityShortcuts();
+  coverageNote.textContent=message+" All 10 planned cities remain selectable; listings will appear after a successful provider refresh.";
   countEl.textContent="No current rental records to show.";
   ambiguityNote.textContent="Try the budget planner or the external marketplace alternatives below.";
   moreEl.hidden=true;
@@ -411,11 +431,6 @@ async function load() {
     statusEl.textContent = "Provider-reported active listings, last refreshed " +
       last.toLocaleDateString("en-US",{year:"numeric",month:"short",day:"numeric",timeZone:"UTC"}) +
       ". Contact the listing office to confirm rent, fees and actual unit availability.";
-    for (const city of [...new Set(providerItems.map(x=>x.city))].sort()) {
-      const option = dom("option","",city);
-      option.value = city;
-      cityEl.append(option);
-    }
     refreshCityShortcuts();
     for (const type of [...new Set(providerItems.map(x=>x.propertyType).filter(Boolean))].sort()) {
       const option = dom("option","",type);
