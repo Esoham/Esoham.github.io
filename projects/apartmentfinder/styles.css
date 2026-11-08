@@ -115,3 +115,30 @@
 .market-evidence strong{font-size:.79rem}
 .market-evidence p{font-size:.76rem;line-height:1.5;margin:.3rem 0 .5rem}
 .market-evidence-link{font-size:.77rem;font-weight:750;color:#1e526d;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
+
+/* ApartmentFinder discovery refresh: on-site search first, actionable shortcuts. */
+.topbar-cta{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:.52rem .9rem;background:#dff0e5;color:#154a31;font-size:.79rem;font-weight:800;text-decoration:none;white-space:nowrap}
+.market-intro-band{display:flex;align-items:center;justify-content:space-between;gap:1rem;background:#173f30;color:#fff;padding:1.15rem 1.4rem;border-radius:14px;margin:1.4rem 0}
+.market-intro-band>div{display:flex;flex-direction:column;gap:.3rem}.market-intro-band strong{font-size:1rem}.market-intro-band span{font-size:.79rem;color:#d6ecdf}
+.market-intro-band a{color:#fff;font-weight:750;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.market-quick-search{margin:1.3rem 0}.market-quick-label{display:block;font-size:.8rem;font-weight:800;margin:0 0 .65rem;color:#2c5840}
+.market-city-shortcuts{display:flex;flex-wrap:wrap;gap:.55rem}
+.city-shortcut{border:1px solid #bed6c5;background:#fff;color:#265a3c;border-radius:999px;padding:.57rem .9rem;font-weight:750;font-size:.82rem;min-height:42px;cursor:pointer}
+.city-shortcut[aria-pressed="true"]{background:#18563b;border-color:#18563b;color:#fff}
+.city-shortcut:hover{border-color:#26724b;box-shadow:0 3px 10px #163e2114}
+.market-results-summary{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;padding:1rem 0;border-bottom:1px solid #dce8e0;margin:.7rem 0}
+.market-results-summary strong{font-size:1rem;color:#254b35}.market-results-summary a{font-size:.82rem;font-weight:700;color:#206347}
+.market-external-fallback{margin:1rem 0;padding:1rem 1.2rem;border:1px solid #d9e5de;border-radius:12px;background:#f4f8f5}
+.market-external-fallback summary{cursor:pointer;font-size:.86rem;font-weight:750;color:#244c35}
+.market-external-fallback p{font-size:.84rem}
+.market-external-fallback .market-links{margin:.6rem 0 0}
+@media(max-width:650px){
+ .topbar-inner{gap:.55rem;flex-wrap:wrap}
+ .topbar nav{display:flex!important;order:3;flex-basis:100%;width:100%;gap:.7rem;overflow-x:auto;padding:.2rem 0 .6rem;scrollbar-width:thin}
+ .topbar nav a{flex-shrink:0;font-size:.76rem}
+ .topbar-cta{margin-left:auto}
+ .market-intro-band{flex-direction:column;align-items:flex-start;padding:1rem}
+ .market-city-shortcuts{flex-wrap:nowrap;overflow-x:auto;padding:0 0 .7rem;scrollbar-width:thin}
+ .city-shortcut{flex-shrink:0}
+}
+@media(prefers-reduced-motion:reduce){.city-shortcut{transition:none}}
