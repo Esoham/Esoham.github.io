@@ -21,7 +21,7 @@ function refreshCityShortcuts() {
   for (const name of ["",...PLANNED_CITIES]) {
     const count=name?providerItems.filter(item=>item.city===name).length:providerItems.length;
     const label=name||"All areas";
-    const option=dom("option","",name?name+(count?"":" — awaiting listings"):"All planned areas");
+    const option=dom("option","",name?name+(count?"":" — awaiting listings"):"All areas");
     option.value=name;cityEl.append(option);
     const button=dom("button","city-shortcut",label);
     button.type="button";button.dataset.city=name;
