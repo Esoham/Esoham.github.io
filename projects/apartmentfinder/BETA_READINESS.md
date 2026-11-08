@@ -14,11 +14,13 @@ Help renters find provider-reported options, understand advertised rents and *en
 - Pre-filled **public GitHub issue** route for listing concerns; requires GitHub sign-in and is not a private or in-app ticket system.
 - On-site beta feedback form prepares and previews a report without a backend; users must explicitly copy or continue to GitHub to submit. No automatic submission is claimed.
 - Node regression tests and Playwright desktop/mobile journeys via GitHub Actions.
+- Security hardening: restrictive static CSP, frontend/ingestion external URL guards, security regression tests, dependency audit in CI and weekly Dependabot. See [SECURITY_REVIEW.md](./SECURITY_REVIEW.md) for residual risks.
 - Automated **manual-review queue** for provider records with questionable rental scope, absent listing-office details, or long-running advertisements; the flags do not constitute independent verification.
 - Nine checked public listing descriptions are linked in on-site research notes, with explicit room-rental evidence and date; this does **not** validate current rent, availability, office contact, ownership or lease terms.
 
 ## Required release gates before inviting real users
 - [ ] Confirm latest `ApartmentFinder QA` run passes *after* the most recent commit. Previously passing tests do not establish later changes pass.
+- [ ] Review security audit results, browser CSP console output and the repo owner's security settings. This is not a penetration test.
 - [ ] Check GitHub Pages deployment for the same commit and manually verify city shortcuts, no-data empty states, property detail modal and all click actions on a phone and desktop.
 - [ ] Confirm the November 8, 2026 scheduled RentCast refresh queries the five new metro cities and that any qualifying records actually appear. No synthetic replacements if a city returns none.
 - [ ] Verify the ApartmentFinder GitHub repository accepts Issues; the current form prepares feedback locally but cannot privately accept submissions. Add a privacy-preserving backend/form provider and data handling notice before broad launch.
