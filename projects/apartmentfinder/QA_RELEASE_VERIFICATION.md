@@ -14,10 +14,19 @@
 - An attempt to open the deployed website and GitHub Actions run using a web retrieval tool did **not** yield an accessible rendered result.
 - GitHub combined-status lookup for the known security commit returned **no statuses**, which is inconclusive, not a pass or failure.
 
+## Final source-level review addendum — 2026-11-07
+- Reviewed the existing client utility, E2E and security test source.
+- Performed a lightweight independent harness execution of **22 JavaScript helper assertions**, all passing after correcting a URL validation regression. The harness used a small URL shim because this inspection environment has no native URL global. This is **not** an official Node test run or browser result.
+- Verified JavaScript syntax for the application, browser journey files and most test files by compilation in a restricted JavaScript runtime; `security.test.mjs` uses `import.meta` and could not be compiled in a non-module wrapper, which is **not** evidence of a source syntax error.
+- Identified and corrected a false-rejection bug in `trustedOfficeUrl`; see [QA_DEFECT_LOG.md](./QA_DEFECT_LOG.md).
+- Added browser scenarios for keyboard navigation and distinguishing planned city coverage from real inventory.
+- Public website and GitHub Actions pages were not retrievable in this environment. GitHub combined-status results were empty/inconclusive. No deployed-site performance, penetration-testing or accessibility certification is claimed.
+
 ## Execution ledger — complete only from real run evidence
 | Check | Result | Evidence |
 | --- | --- | --- |
 | Node functional/security tests | Not verified | Check current GitHub Actions run |
+| Independent JavaScript helper harness | 22/22 assertions passed with URL shim | Source-inspection execution, not official Node CI |
 | Python RentCast contract tests | Not verified | Check current GitHub Actions run |
 | Playwright desktop Chromium | Not verified | Check current GitHub Actions run |
 | Playwright Pixel 7 mobile emulation | Not verified | Check current GitHub Actions run |
