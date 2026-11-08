@@ -142,3 +142,9 @@
  .city-shortcut{flex-shrink:0}
 }
 @media(prefers-reduced-motion:reduce){.city-shortcut{transition:none}}
+
+/* Entire property price/address is actionable, while preserving nested save controls. */
+.market-open-price{display:block;width:100%;text-align:left;background:transparent;color:inherit;border:0;padding:.4rem 0;border-radius:7px;cursor:pointer;font-family:inherit}
+.market-open-price:hover,.market-open-price:focus-visible{text-decoration:underline;text-underline-offset:5px}
+.market-address-button{appearance:none;border:0;background:transparent;color:#203e2d;padding:0;text-align:left;font:inherit;font-weight:800;line-height:1.4;cursor:pointer;text-decoration:none;overflow-wrap:anywhere}
+.market-address-button:hover,.market-address-button:focus-visible{color:#146647;text-decoration:underline;text-underline-offset:3px}
