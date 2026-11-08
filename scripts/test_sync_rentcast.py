@@ -65,9 +65,37 @@ class RentCastIngestTests(unittest.TestCase):
             calls.append(city)
             return [example()]
         snapshot = r.build_snapshot("testing-key", now=NOW, fetch=fetch)
-        self.assertEqual(calls, list(r.CITIES))
+        self.assertEqual(calls, list(r.cities_for_week(NOW)))
+        self.assertEqual(len(calls), r.REQUESTS_PER_RUN)
         self.assertEqual(len(snapshot["items"]), 1)
         self.assertEqual(snapshot["status"], "ready")
+
+    def test_weekly_rotation_covers_ten_cities_with_only_five_calls(self):
+        first = r.cities_for_week(NOW)
+        second = r.cities_for_week(NOW + dt.timedelta(days=7))
+        self.assertEqual(len(first), 5)
+        self.assertEqual(len(second), 5)
+        self.assertEqual(len(set(first) | set(second)), 10)
+
+    def test_retains_only_fresh_previous_city_records(self):
+        previous = r.normalize_record(example(), NOW)
+        stale = dict(previous, id="expired", lastSeenDate="2026-10-01T12:00:00Z")
+        retained = r.existing_recent_records(NOW, {
+            "provider":"RentCast","items":[previous,stale]
+        })
+        self.assertEqual([item["id"] for item in retained], [previous["id"]])
+
+    def test_merged_snapshot_keeps_fresh_old_city_without_additional_calls(self):
+        previous = r.normalize_record(example(), NOW)
+        calls=[]
+        def fetch(city, key):
+            calls.append(city)
+            return []
+        snapshot=r.build_snapshot("testing-key", now=NOW, fetch=fetch,
+                                  old_snapshot={"provider":"RentCast","items":[previous]})
+        self.assertEqual(len(calls), 5)
+        self.assertEqual(len(snapshot["items"]), 1)
+        self.assertIn("Atlanta", snapshot["coverageCities"])
 
     def test_rejects_blank_key_before_requests(self):
         with self.assertRaises(ValueError):
