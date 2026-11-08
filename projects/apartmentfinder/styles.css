@@ -109,3 +109,9 @@
 
 /* Non-alarmist review signals; risk flag does not establish fraud. */
 .market-review-note{font-size:.76rem;background:#f3f6f7;border:1px solid #d8e0e3;color:#3c565b;border-radius:8px;padding:.55rem .7rem;margin:.4rem 0}
+
+/* Evidence-backed listing research; never a current-availability badge. */
+.market-evidence{background:#edf3fa;border:1px solid #bbcfdf;border-radius:10px;padding:.75rem .85rem;margin:.7rem 0;color:#254e69}
+.market-evidence strong{font-size:.79rem}
+.market-evidence p{font-size:.76rem;line-height:1.5;margin:.3rem 0 .5rem}
+.market-evidence-link{font-size:.77rem;font-weight:750;color:#1e526d;text-decoration:underline;text-underline-offset:3px;overflow-wrap:anywhere}
