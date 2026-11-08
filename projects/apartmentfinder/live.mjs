@@ -1,4 +1,5 @@
 import { validateSnapshot, filterProviderListings, trustedOfficeUrl, hasAmbiguousRentalScope, estimateRenterCosts, toggleRentalComparison, compareRentalFacts, rentalReviewFlags } from "./live-utils.mjs";
+import { LISTING_RESEARCH } from "./listing-research.mjs";
 
 const statusEl = document.querySelector("#market-status");
 const grid = document.querySelector("#market-grid");
@@ -144,6 +145,20 @@ function reportLink(item){
  a.title="Opens a pre-filled public GitHub issue; a GitHub account is required";
  return a;
 }
+function researchedScope(item){
+ return Object.hasOwn(LISTING_RESEARCH,item.id)?LISTING_RESEARCH[item.id]:null;
+}
+function researchEvidence(item){
+ const info=researchedScope(item);
+ if(!info || info.scope!=="room-advertised")return null;
+ const wrap=dom("div","market-evidence");
+ wrap.append(dom("strong","","External listing identifies room rental"));
+ wrap.append(dom("p","",info.note+" Renter research checked "+info.checkedOn+"; current price and availability remain unverified."));
+ const link=dom("a","market-evidence-link","Read source: "+info.sourceName+" ↗");
+ link.href=info.sourceUrl;link.target="_blank";link.rel="noopener noreferrer";
+ wrap.append(link);
+ return wrap;
+}
 function makeFact(label,value){
  const wrapper=dom("div","detail-fact");
  wrapper.append(dom("span","",label),dom("strong","",value));
@@ -169,6 +184,8 @@ function openRentalDetails(item){
  ];
  listingFacts.forEach(([k,v])=>facts.append(makeFact(k,v)));
  detailContent.append(facts);
+ const detailEvidence=researchEvidence(item);
+ if(detailEvidence)detailContent.append(detailEvidence);
  if(hasAmbiguousRentalScope(item))
    detailContent.append(dom("p","market-warning","This one-bedroom single-family record may refer to a room or partial property. Confirm what the listed rent covers."));
  const info=dom("section","detail-checklist");
@@ -229,6 +246,8 @@ function listingCard(item) {
   ];
   for(const value of factValues.filter(Boolean))facts.append(dom("span","market-fact",value));
   body.append(facts);
+  const publicEvidence=researchEvidence(item);
+  if(publicEvidence)body.append(publicEvidence);
   const flags=rentalReviewFlags(item);
   if(flags.includes("scope-unverified"))
     body.append(dom("p","market-warning","Rental scope unverified: this may be a room or shared accommodation, not an entire home."));
