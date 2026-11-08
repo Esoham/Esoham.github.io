@@ -107,6 +107,8 @@ function renderRealComparison(notice=""){
 }
 realCompareClear.addEventListener("click",()=>{realComparison=[];render();});
 let visibleCount=12;
+const ambiguousEl=document.querySelector("#market-exclude-ambiguous");
+const ambiguityNote=document.querySelector("#market-ambiguity-note");
 const savedOnlyEl=document.querySelector("#market-saved-only");
 const sortEl=document.querySelector("#market-sort");
 const moreEl=document.querySelector("#market-more");
@@ -296,6 +298,11 @@ function render(notice="") {
     city:cityEl.value,zip:zipEl.value,propertyType:typeEl.value,
     maxRent:maxRentEl.value,minBeds:bedroomsEl.value
   });
+  const ambiguousCount=filtered.filter(hasAmbiguousRentalScope).length;
+  if(ambiguousEl.checked)filtered=filtered.filter(item=>!hasAmbiguousRentalScope(item));
+  ambiguityNote.textContent=ambiguousCount
+    ? (ambiguousEl.checked?ambiguousCount+" potentially shared/room rental records hidden. Uncheck the filter to review them.":ambiguousCount+" potentially shared/room rental records included and flagged. Confirm rental scope independently.")
+    : "All listings still require independent availability and price verification.";
   if(savedOnlyEl.checked)filtered=filtered.filter(item=>savedIds.has(item.id));
   if(sortEl.value==="newest")filtered.sort((a,b)=>Date.parse(b.lastSeenDate)-Date.parse(a.lastSeenDate)||a.rent-b.rent);
   else if(sortEl.value==="highest")filtered.sort((a,b)=>b.rent-a.rent);
@@ -311,11 +318,12 @@ for (const select of [cityEl,bedroomsEl,typeEl]) select.addEventListener("change
 maxRentEl.addEventListener("input",render);
 zipEl.addEventListener("input",render);
 form.addEventListener("submit", event=>event.preventDefault());
+ambiguousEl.addEventListener("change",()=>{visibleCount=12;render();});
 savedOnlyEl.addEventListener("change",()=>{visibleCount=12;render();});
 sortEl.addEventListener("change",render);
 moreEl.addEventListener("click",()=>{visibleCount+=12;render();});
 resetEl.addEventListener("click",()=>{
-  form.reset();zipEl.value="";savedOnlyEl.checked=false;sortEl.value="lowest";visibleCount=12;render();
+  form.reset();zipEl.value="";ambiguousEl.checked=true;savedOnlyEl.checked=false;sortEl.value="lowest";visibleCount=12;render();
 });
 
 async function load() {
