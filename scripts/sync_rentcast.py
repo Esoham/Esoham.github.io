@@ -36,10 +36,24 @@ def parse_date(value):
         return None
 
 def safe_website(value):
-    if not isinstance(value, str) or len(value) > 400:
+    """Don't publish credential URLs or links to localhost/private-network hosts."""
+    if not isinstance(value, str) or not value or len(value) > 400:
         return None
-    parsed = urllib.parse.urlsplit(value)
-    if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
+    if any(ord(c) < 32 or ord(c) == 127 for c in value):
+        return None
+    try:
+        parsed = urllib.parse.urlsplit(value)
+        host = (parsed.hostname or "").lower().rstrip(".")
+        if (parsed.scheme != "https" or not host or parsed.username or parsed.password
+                or (parsed.port is not None and parsed.port != 443)
+                or "." not in host or host == "localhost"
+                or host.endswith((".localhost", ".local", ".internal", ".test"))
+                or not any(c.isalpha() for c in host)
+                or ":" in host):
+            return None
+        if all(c in "0123456789." for c in host):
+            return None
+    except ValueError:
         return None
     return value
 
