@@ -377,6 +377,12 @@ resetEl.addEventListener("click",()=>{
   form.reset();zipEl.value="";ambiguousEl.checked=true;savedOnlyEl.checked=false;sortEl.value="lowest";visibleCount=12;render();
 });
 
+function markFeedUnavailable(message){
+  coverageNote.textContent=message;
+  countEl.textContent="No current rental records to show.";
+  ambiguityNote.textContent="Try the budget planner or the external marketplace alternatives below.";
+  moreEl.hidden=true;
+}
 async function load() {
   try {
     const response = await fetch("./data/live-listings.json", {cache:"no-store"});
@@ -385,14 +391,17 @@ async function load() {
     const result = validateSnapshot(payload);
     if (result.state === "not_configured") {
       statusEl.textContent = "Rental feed is not connected yet. See the independent marketplace options below.";
+      markFeedUnavailable("City coverage is temporarily unavailable because the provider feed is not connected.");
       return;
     }
     if (result.state === "stale") {
       statusEl.textContent = "The authorized rental snapshot has expired. No stale rentals are displayed. See the other marketplace options below while the feed refreshes.";
+      markFeedUnavailable("City coverage is temporarily unavailable while the listing snapshot refreshes.");
       return;
     }
     if (result.state === "empty") {
       statusEl.textContent = "The authorized feed returned no sufficiently recent active records in the configured cities. Check original listing sites directly.";
+      markFeedUnavailable("No current provider records are available for the configured areas.");
       return;
     }
     if (result.state !== "ready") throw new Error("unrecognized snapshot");
@@ -416,6 +425,7 @@ async function load() {
     render();
   } catch {
     statusEl.textContent = "Rental feed unavailable. You can still use the budget planner or browse external marketplaces in the fallback section.";
+    markFeedUnavailable("City coverage could not be loaded. Please try again later.");
   }
 }
 load();
