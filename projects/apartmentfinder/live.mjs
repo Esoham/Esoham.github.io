@@ -252,13 +252,21 @@ function listingCard(item) {
   save.setAttribute("aria-label",(savedIds.has(item.id)?"Remove saved rental: ":"Save rental: ")+item.address);
   save.addEventListener("click",()=>saveListing(item.id));
   top.append(save);art.append(top);
-  const price=dom("div","market-hero-price",usd(item.rent));
+  const price=dom("button","market-hero-price market-open-price",usd(item.rent));
+  price.type="button";
+  price.setAttribute("aria-label","View rental details for "+item.address+", listed at "+usd(item.rent)+" per month");
   price.append(dom("span",""," / month listed"));
+  price.addEventListener("click",()=>openRentalDetails(item));
   art.append(price);
   art.append(dom("span","market-illustration-note","Property photo not supplied"));
   const body=dom("div","card-body market-card-body");
   body.append(dom("p","city",item.city+", GA "+(item.zip||"")));
-  body.append(dom("h3","",item.address));
+  const heading=dom("h3","");
+  const addressButton=dom("button","market-address-button",item.address);
+  addressButton.type="button";
+  addressButton.setAttribute("aria-label","View details: "+item.address);
+  addressButton.addEventListener("click",()=>openRentalDetails(item));
+  heading.append(addressButton);body.append(heading);
   const facts=dom("div","market-facts");
   const factValues=[
     item.beds===null?"Bedrooms unknown":item.beds===0?"Studio":item.beds+" bed",
