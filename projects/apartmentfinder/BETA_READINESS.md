@@ -8,7 +8,8 @@ Help renters find provider-reported options, understand advertised rents and *en
 - Real listing cards with city, rent, beds, baths, property type, provider last-seen date and clearly labeled uncertainty.
 - Rental discovery excludes potentially room-like single-family one-bedroom records by default, showing a hidden-record count and allowing renters to opt in and inspect them. The filter is heuristic and does not certify other records as whole units.
 - Search, ZIP/city/type filters, clickable city shortcuts, sorting, browser-only saved records, clickable price/address details and up-to-three real-rental comparison.
-- Ten planned metro Atlanta city queries rotated across two weekly refreshes at five API calls per run; only cities with current qualifying records appear as searchable areas.
+- Reworked on-site property details: prominent advertised rent, last-seen and unverified status, fee disclosure, save/compare buttons, cost planner and neighborhood map.
+- All ten planned metro Atlanta cities are selectable now, with honest 'awaiting listings' empty states for cities whose provider snapshots have no recent records. Actual data queries rotate in two five-city weekly groups within the existing five-request budget.
 - On-site property details and renter-entered budget planning, including transportation, groceries, debt payments and other essentials; unknown fees are not guessed. The planner shows both housing costs and estimated cash remaining after entered living expenses.
 - Pre-filled **public GitHub issue** route for listing concerns; requires GitHub sign-in and is not a private or in-app ticket system.
 - On-site beta feedback form prepares and previews a report without a backend; users must explicitly copy or continue to GitHub to submit. No automatic submission is claimed.
@@ -18,7 +19,8 @@ Help renters find provider-reported options, understand advertised rents and *en
 
 ## Required release gates before inviting real users
 - [ ] Confirm latest `ApartmentFinder QA` run passes *after* the most recent commit. Previously passing tests do not establish later changes pass.
-- [ ] Check GitHub Pages deployment for the same commit and manually verify real provider data on a phone and desktop.
+- [ ] Check GitHub Pages deployment for the same commit and manually verify city shortcuts, no-data empty states, property detail modal and all click actions on a phone and desktop.
+- [ ] Confirm the November 8, 2026 scheduled RentCast refresh queries the five new metro cities and that any qualifying records actually appear. No synthetic replacements if a city returns none.
 - [ ] Verify the ApartmentFinder GitHub repository accepts Issues; the current form prepares feedback locally but cannot privately accept submissions. Add a privacy-preserving backend/form provider and data handling notice before broad launch.
 - [ ] Review RentCast plan, attribution and permitted public display before advertising widely.
 - [ ] Continue manual verification beyond the first nine scope checks; contact authorized property offices and reconcile prices, availability and fees before broad beta promotion. Public web listings alone are not verification of those facts. Record any stale, misleading or room-only rent anomalies. Do **not** contact tenants or collect their private information.
