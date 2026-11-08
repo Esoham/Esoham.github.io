@@ -195,3 +195,12 @@ test("mobile navigation remains visible and functional",async ({page,isMobile})=
  await nav.getByRole("link",{name:"Actual rentals"}).click();
  await expect(page).toHaveURL(/#market-search$/);
 });
+
+test("address and price open the on-site property dialog",async ({page})=>{
+ const card=page.locator("#market-grid .market-card").first();
+ await card.getByRole("button",{name:/View details: 100 Sample Street/}).click();
+ await expect(page.locator("#rental-detail-dialog")).toBeVisible();
+ await page.getByRole("button",{name:"Close property details"}).click();
+ await card.getByRole("button",{name:/View rental details for 100 Sample Street/}).click();
+ await expect(page.locator("#rental-detail-dialog")).toBeVisible();
+});
