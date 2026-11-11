@@ -103,35 +103,28 @@ footer .foot{display:flex;justify-content:space-between;align-items:center;flex-
 </div></section>
 <section id="projects" class="section"><div class="container">
 <div class="section-heading"><div class="eyebrow">02 / Selected work</div><h2>From testing a workflow to building the system behind it.</h2>
-<p>Four selected projects across QA, enterprise operations and software. Each links to inspectable implementation and honest scope notes.</p></div>
+<p>Three featured projects across QA, AI-output evaluation and manufacturing systems. Each links to inspectable implementation and honest scope notes.</p></div>
 <div class="featured">
 <article class="feature">
-<div class="visual text-visual"><strong>CommerceQA</strong><small>UI + API regression / evidence and defect analysis</small></div>
-<div class="feature-body"><div class="label">Software QA · Test automation</div><h3>CommerceQA / FarmFresh</h3>
-<p>Independent QA lab for a fictional industrial catalog: Playwright browser journeys, Selenium Page Objects, pytest API contracts, negative and boundary tests, plus CI configuration and recorded verification limitations.</p>
-<div class="tags"><span>Playwright</span><span>pytest</span><span>Postman/API</span><span>GitHub Actions</span></div>
-<div class="cardlinks"><a href="qa.html">QA case studies ↗</a><a href="https://github.com/Esoham/QA-Automation-Project">Test code &amp; artifacts ↗</a></div>
+<div class="visual text-visual"><strong>CommerceQA</strong><small>UI + API regression / documented defects / CI evidence</small></div>
+<div class="feature-body"><div class="label">01 / Software QA · Test automation</div><h3>CommerceQA / FarmFresh</h3>
+<p>Independent QA lab for a fictional catalog: Playwright and Selenium browser checks, pytest API coverage, three documented repaired FarmFresh defects, test evidence and a working GitHub Actions pipeline.</p>
+<div class="tags"><span>Playwright</span><span>pytest</span><span>Regression</span><span>CI</span></div>
+<div class="cardlinks"><a href="projects/qa-defects.html">Real defect documentation ↗</a><a href="projects/qa-verification.html">CI and test evidence ↗</a><a href="https://github.com/Esoham/QA-Automation-Project">Code ↗</a></div>
+</div></article>
+<article class="feature">
+<div class="visual text-visual"><strong>AI Output QA</strong><small>Golden cases / grounding / adversarial tests</small></div>
+<div class="feature-body"><div class="label">02 / AI evaluation · QA methodology</div><h3>AI Response Evaluation</h3>
+<p>Structured, deterministic evaluation examples for catalog-grounded answers, out-of-stock truthfulness and adversarial prompts. Includes negative grader checks and clearly distinguishes synthetic fixtures from live-model performance.</p>
+<div class="tags"><span>Golden cases</span><span>Python</span><span>Grounding</span><span>Refusal tests</span></div>
+<div class="cardlinks"><a href="projects/ai-qa-evaluation.html">Read walkthrough ↗</a><a href="https://github.com/Esoham/QA-Automation-Project/tree/master/evals">Evaluator code ↗</a></div>
 </div></article>
 <article class="feature">
 <div class="visual text-visual"><strong>Meridian ERP</strong><small>PO → stock → BOM → work order → quality review</small></div>
-<div class="feature-body"><div class="label">Manufacturing ERP · Business systems</div><h3>Meridian ERP</h3>
-<p>Local FastAPI and SQLite manufacturing workspace with supplier purchasing, inventory movements, revision-controlled BOMs, production routing, quality holds and ledger/audit review. Uses fictional data, not employer systems.</p>
-<div class="tags"><span>FastAPI</span><span>SQLite</span><span>Manufacturing workflows</span><span>QA controls</span></div>
-<div class="cardlinks"><a href="projects/meridian-erp.html">ERP case study ↗</a><a href="https://github.com/Esoham/Meridian-ERP">Code &amp; regression tests ↗</a></div>
-</div></article>
-<article class="feature">
-<div class="visual"><img src="assets/changeguard-preview.svg" alt="Illustrated preview of a manufacturing change review showing a HOLD decision" loading="lazy"></div>
-<div class="feature-body"><div class="label">Agentic AI · Manufacturing systems</div><h3>ChangeGuard MFG</h3>
-<p>How do you know a manufacturing engineering change is actually ready for release? ChangeGuard compares fictional BOM, inventory, purchasing, work-in-process, and quality evidence and proposes a READY/HOLD review. It includes agent contracts, a verifier, a synthetic evaluation set, and a human approval gate.</p>
-<div class="tags"><span>Python</span><span>SQLite</span><span>Tool workflows</span><span>Evaluation</span></div>
-<div class="cardlinks"><a href="projects/changeguard.html">Case study ↗</a><a href="https://github.com/Esoham/ChangeGuard_MFG_SUBMIT_READY_FLAT-/blob/main/docs/JUDGE_WALKTHROUGH.md">5-minute technical review ↗</a></div>
-</div></article>
-<article class="feature">
-<div class="visual"><img src="https://raw.githubusercontent.com/Esoham/vanessa-voice-ai/main/vanessa_AL.png" alt="Vanessa Voice AI project interface screenshot from the source repository" loading="lazy" decoding="async"></div>
-<div class="feature-body"><div class="label">Voice AI · Full-stack integration</div><h3>Vanessa Voice AI</h3>
-<p>A React/Node.js prototype exploring voice-assisted conversations, lead qualification, call status tracking, and human handoff through Vapi and GPT-4 integration. The project documents required credentials, operational constraints, and limitations; it is not presented as a deployed commercial calling service.</p>
-<div class="tags"><span>React</span><span>Node.js</span><span>Express</span><span>Voice AI</span></div>
-<div class="cardlinks"><a href="projects/vanessa-ai.html">Case study & screenshots ↗</a><a href="https://github.com/Esoham/vanessa-voice-ai">Source code ↗</a></div>
+<div class="feature-body"><div class="label">03 / ERP · Business systems</div><h3>Meridian ERP</h3>
+<p>Independent FastAPI/SQLite manufacturing application exploring supplier purchasing, inventory, BOM revisions, work orders, quality holds and audit traceability with fictional records and regression cases.</p>
+<div class="tags"><span>FastAPI</span><span>SQLite</span><span>Manufacturing</span><span>QA controls</span></div>
+<div class="cardlinks"><a href="projects/meridian-erp.html">ERP case study ↗</a><a href="https://github.com/Esoham/Meridian-ERP">Source &amp; tests ↗</a></div>
 </div></article>
 </div></div></section>
 <section class="section" id="more"><div class="container">
@@ -145,6 +138,8 @@ footer .foot{display:flex;justify-content:space-between;align-items:center;flex-
 <article class="project"><div class="label">Python · Exception monitoring</div><h3>FluxPilot</h3><p>Configurable multi-feed validation, structured exception reporting, and automated tests for example operations data.</p><div class="cardlinks"><a href="projects/fluxpilot.html">Case study ↗</a><a href="https://github.com/Esoham/fluxpilot-automation">Source & tests ↗</a></div></article>
 <article class="project"><div class="label">Product · Customer support</div><h3>ResolveIQ</h3><p>A support-triage interface illustrating case prioritization, ownership, and status tracking with synthetic records.</p><div class="cardlinks"><a href="projects/resolveiq/">Try demo ↗</a><a href="https://github.com/Esoham/Esoham.github.io/blob/main/projects/resolveiq/CASE_STUDY.md">Product case study ↗</a></div></article>
 <article class="project"><div class="label">IT audit · Internal controls</div><h3>AuditGuard AI</h3><p>A rule-based controls review prototype examining privileged access, segregation of duties, and approvals using synthetic ERP records. No live LLM is connected.</p><div class="cardlinks"><a href="projects/auditguard-ai.html">Try demo ↗</a></div></article>
+<article class="project"><div class="label">Applied AI · Manufacturing review</div><h3>ChangeGuard MFG</h3><p>Fictional engineering-change evidence review with deterministic checks and a human release gate, separate from real employer systems.</p><div class="cardlinks"><a href="projects/changeguard.html">Case study ↗</a><a href="https://github.com/Esoham/ChangeGuard_MFG_SUBMIT_READY_FLAT-">Code ↗</a></div></article>
+<article class="project"><div class="label">Full-stack · Voice AI</div><h3>Vanessa Voice AI</h3><p>React/Node.js voice-assistant prototype with Vapi integration and documented limitations; not a commercial live calling service.</p><div class="cardlinks"><a href="projects/vanessa-ai.html">Case study ↗</a><a href="https://github.com/Esoham/vanessa-voice-ai">Source ↗</a></div></article>
 </div>
 <p class="small-note">Project data and scenarios are synthetic where indicated. Demos and local lab milestones are not claims of production use, customer adoption, or verified commercial results.</p>
 </div></section>
