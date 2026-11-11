@@ -47,8 +47,8 @@ jobs:
             if (!fs.existsSync(dir + '/' + asset)) throw new Error('Missing ' + asset);
           }
           if (!page.includes('src="./app.mjs"')) throw new Error('Frontend entrypoint missing');
-          if (!page.includes('Sample apartment cards are fictional')) throw new Error('Demo disclosure missing');
-          if (!page.includes('provider-sourced rental section') || !page.includes('src="./live.mjs"')) throw new Error('Provider listing separation missing');
+          if (!page.includes('A separate interactive sample is fictional.') || !page.includes('This separate demo illustrates costs and does not represent actual rental offers.')) throw new Error('Demo disclosure missing');
+          if (!page.includes('Provider-reported rentals are displayed below') || !page.includes('Provider-sourced listings are separate') || !page.includes('src="./live.mjs"')) throw new Error('Provider listing separation missing');
           const home = fs.readFileSync('index.html', 'utf8');
           if (!home.includes('href="projects/apartmentfinder/"')) throw new Error('Portfolio link missing');
           NODE
