@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f4f7f8">
+<meta name="description" content="Meridian ERP: an independent FastAPI and SQLite manufacturing systems portfolio project by Esoham Abalo, connecting purchasing, inventory, BOMs, work orders, quality and audit trails.">
+<title>Meridian ERP | Manufacturing Systems Case Study — Esoham Abalo</title>
+<style>
+:root{--bg:#f4f7f8;--paper:#fff;--ink:#142932;--muted:#506673;--line:#dce5e9;--teal:#086e69;--navy:#153441}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:#086e69}a:focus-visible{outline:3px solid #c46d34;outline-offset:3px}.wrap{width:min(960px,calc(100% - 38px));margin:auto}
+header{background:white;border-bottom:1px solid var(--line)}nav{padding:17px 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;align-items:center}
+nav a{font-weight:700;text-decoration:none}nav .identity{color:var(--navy);font-size:1.08rem}.navlinks{display:flex;flex-wrap:wrap;gap:18px}
+.hero{padding:64px 0 48px;background:linear-gradient(155deg,#ebf7f3,#f4f7f8 60%)}.eyebrow{font-size:.8rem;font-weight:850;color:var(--teal);letter-spacing:.12em;text-transform:uppercase}
+h1{font-size:clamp(2.4rem,6vw,4.4rem);letter-spacing:-.06em;line-height:1.1;max-width:770px;margin:13px 0 17px}h2{font-size:clamp(1.4rem,4vw,2rem);line-height:1.25;margin:0 0 16px;letter-spacing:-.035em}h3{font-size:1.1rem;margin:0 0 7px}
+.lead{font-size:1.13rem;max-width:770px;color:var(--muted)}.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.btn{padding:10px 18px;border:1px solid var(--navy);border-radius:9px;text-decoration:none;font-weight:800;background:var(--navy);color:white}.btn.alt{color:var(--navy);background:transparent}
+.note{font-size:.9rem;color:var(--muted)}.section{padding:49px 0;border-top:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:23px;box-shadow:0 7px 22px rgba(21,52,65,.04)}
+.card p{margin:0;color:var(--muted)}.card ul{padding-left:21px;margin:8px 0 0}.diagram{display:flex;align-items:stretch;gap:6px;flex-wrap:wrap}
+.step{flex:1 1 130px;background:#e8f3f2;border:1px solid #bfdcd5;border-radius:10px;padding:13px;font-size:.9rem;font-weight:700}
+.step span{display:block;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+ul,ol{padding-left:23px}li{margin-bottom:7px}code{background:#e6eeef;padding:2px 5px;border-radius:4px}
+footer{background:var(--navy);color:white;padding:25px 0}footer a{color:#d5f9f1}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero{padding:45px 0 35px}.section{padding:36px 0}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header><nav class="wrap" aria-label="Primary"><a class="identity" href="../index.html">EA / ESOHAM ABALO</a><div class="navlinks"><a href="../index.html#projects">Projects</a><a href="../qa.html">QA evidence</a><a href="../resume.html">Resume</a><a href="https://github.com/Esoham/Meridian-ERP">Source code ↗</a></div></nav></header>
+<main>
+<section class="hero"><div class="wrap"><div class="eyebrow">Business systems / ERP / QA case study</div><h1>Meridian ERP: from inventory transactions to an end-to-end manufacturing workflow.</h1>
+<p class="lead">An independently built, local manufacturing systems prototype exploring how purchasing, inventory, engineering BOMs, work orders, quality holds and traceability should behave as one coordinated process.</p>
+<div class="cta"><a class="btn" href="https://github.com/Esoham/Meridian-ERP">Explore source & tests ↗</a><a class="btn alt" href="https://github.com/Esoham/Meridian-ERP/blob/main/docs/FINAL_RELEASE.md">Read workflow guide ↗</a><a class="btn alt" href="../resume.html">Professional background ↗</a></div>
+<p class="note">Python · FastAPI · SQLite · JavaScript · Local demo with fictional business data. Not a deployed enterprise ERP or a replacement for Infor.</p></div></section>
+<section class="section"><div class="wrap"><h2>The business problem</h2>
+<p>Inventory teams often have to reconcile disconnected purchase records, material receipts, item definitions and work-order status. A transaction can appear correct in one screen yet leave the next team with missing or inconsistent data. Meridian ERP explores the workflow controls needed to make those transitions explicit, testable and traceable.</p>
+<div class="grid">
+<div class="card"><h3>My starting point</h3><p>At Low Temp Industries, I work with Infor ERP job orders, item references, receiving/issuing transactions, cycle counts and discrepancy investigations. Meridian uses independent, fictional records to translate these operational concepts into a prototype; no employer source code or data is used.</p></div>
+<div class="card"><h3>What I built</h3><p>A local API and dashboard demonstrating supplier purchase orders, stock receipts, versioned BOMs, work-order reservations and routing, production completion, nonconformance reviews, an audit ledger and optional simplified cost postings.</p></div>
+</div></div></section>
+<section class="section"><div class="wrap"><div class="eyebrow">Workflow walkthrough</div><h2>Follow one synthetic order across teams</h2>
+<div class="diagram" aria-label="Purchasing to manufacturing completion process"><div class="step"><span>01 / Supply</span>Supplier PO & receipt</div><div class="step"><span>02 / Inventory</span>Stock ledger & reservation</div><div class="step"><span>03 / Engineering</span>Active BOM revision</div><div class="step"><span>04 / Production</span>Work order & routing</div><div class="step"><span>05 / Quality</span>Blocking checks & release</div></div>
+<ol><li>Create or receive inventory using an approved supplier order; record the movement.</li><li>Activate a bill of materials for the item to manufacture.</li><li>Create a work order, reserve and issue required components, then complete routing operations.</li><li>Prevent a finished-goods receipt while a high-severity quality nonconformance remains open.</li><li>After required checks pass, post finished goods; inspect the ledger, audit trail and receipt history.</li></ol>
+<p><a href="https://github.com/Esoham/Meridian-ERP#demonstrate-an-end-to-end-work-order">See the exact sample SKUs, steps and expected balances ↗</a></p></div></section>
+<section class="section"><div class="wrap"><h2>Technical decisions and verification</h2><div class="grid">
+<div class="card"><h3>Workflow integrity</h3><p>The project exercises revision-controlled BOM snapshots, reservations, an append-only movement ledger, nonconformance gates and idempotent receipt commands to reduce double-posting or inconsistent state.</p></div>
+<div class="card"><h3>API and persistence</h3><p>FastAPI organizes application endpoints while SQLite supports the local demonstrator. The dashboard is JavaScript-based, with API documentation accessible locally.</p></div>
+<div class="card"><h3>Testable behavior</h3><p>Pytest regression cases cover implemented workflows. GitHub Actions is configured to validate multiple Python versions and dashboard JavaScript. A workflow badge and test configuration are available in the repository.</p></div>
+<div class="card"><h3>Business constraints</h3><p>Requirements and acceptance paths focus on material availability, preventing duplicate finished receipts, flagging severe quality issues and distinguishing illustrative accounting from production financial controls.</p></div>
+</div>
+<p class="note"><a href="https://github.com/Esoham/Meridian-ERP/tree/main/tests">Inspect test cases ↗</a> · <a href="https://github.com/Esoham/Meridian-ERP/blob/main/docs/ARCHITECTURE.md">Architecture ↗</a> · <a href="https://github.com/Esoham/Meridian-ERP/blob/main/docs/ERP_CAPABILITIES.md">Capability matrix ↗</a></p></div></section>
+<section class="section"><div class="wrap"><h2>What this demonstrates for an employer</h2>
+<div class="grid">
+<div class="card"><h3>Business systems analyst / ERP</h3><p>Understanding operational workflows, identifying where records must reconcile, translating the process into system requirements, documenting exception behavior and reviewing controls across teams.</p></div>
+<div class="card"><h3>QA / project delivery</h3><p>Defining acceptance criteria, testing negative paths, inspecting transaction results, documenting incomplete scope and breaking a complex business process into deliverable modules.</p></div>
+</div></div></section>
+<section class="section"><div class="wrap"><h2>Scope, limitations and next steps</h2><p>Meridian is a portfolio-grade <strong>local demonstration, not a commercial ERP deployment</strong>. It does not implement production authentication or tenant isolation, certified accounting, live Infor/SAP integrations, full inventory lot/serial controls, or a resilient hosted architecture. The accounting example is optional and deliberately simplified. No customer usage, employer ROI, production uptime or external certification is claimed.</p>
+<p>The next engineering milestones would be production-grade access controls, tenant-aware data separation, richer inventory adjustments, documented external integration contracts and additional end-to-end regression evidence.</p>
+<div class="cta"><a class="btn" href="https://github.com/Esoham/Meridian-ERP">Review the repository ↗</a><a class="btn alt" href="../index.html">Back to portfolio ↗</a></div></div></section>
+</main><footer><div class="wrap">Esoham Abalo · Atlanta, GA · <a href="mailto:Esoham@yahoo.com">Email</a> · <a href="../qa.html">Software QA portfolio</a></div></footer>
+</body></html>
