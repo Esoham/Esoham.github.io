@@ -27,7 +27,7 @@ jobs:
           node-version: '22'
       - name: Run affordability and filtering tests
         run: node --test projects/apartmentfinder/tests/*.test.mjs
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: Test RentCast ingest without API calls
