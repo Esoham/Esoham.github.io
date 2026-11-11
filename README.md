@@ -1,24 +1,27 @@
-# Esoham Abalo — Applied AI, QA & Business Systems Portfolio
+# Esoham Abalo — Software QA, ERP & Business Systems Portfolio
 
 **Live site:** https://esoham.github.io/  
 **Printable resume:** https://esoham.github.io/resume.html  
 **Contact:** Esoham@yahoo.com  
 **GitHub profile:** https://github.com/Esoham
 
-A responsive, dependency-free portfolio website designed to help recruiters and technical reviewers quickly understand my work in **applied AI, AI evaluation, software quality, manufacturing systems, and business process automation**.
+A responsive, dependency-free portfolio website designed to help recruiters and technical reviewers quickly navigate **software QA, Infor ERP / manufacturing systems, project delivery, product operations, applied AI, and security labs**.
 
-## What the site highlights
+## Recruiter review paths
 
-1. **Flagship AI applications:** ChangeGuard MFG and Vanessa Voice AI, with real source-repository screenshots where available.
-2. **Hands-on prototypes:** ApartmentFinder (fictional rent-comparison demo plus opt-in authorized rental data integration), MerchantFlow, SentinelWatch, VerityFlow, FluxPilot, ResolveIQ, and AuditGuard AI.
-3. **AI Generalist / evaluation work sample:** an annotated rubric-based exercise with explicitly fictional responses.
-4. **Professional experience:** manufacturing ERP/inventory operations and software QA, plus a print-friendly resume and email contact route.
+1. **[Software QA](qa.html)** — professional testing background, CommerceQA / FarmFresh browser and API tests, Playwright exercise, test strategy, verification evidence, and a transparent risk matrix.
+2. **[Manufacturing ERP / business systems](projects/meridian-erp.html)** — an end-to-end independent manufacturing workflow, material reconciliation context, revision-controlled BOMs, work orders, quality holds, audit trail and test links.
+3. **[Project & product operations](https://github.com/Esoham/merchantflow/blob/main/docs/PRD.md)** — MerchantFlow product requirements, prioritization, acceptance criteria, roadmap, interactive prototype, and implementation details.
+4. **[Applied AI](projects/changeguard.html)** — human-reviewed change impact checking, evaluation examples and declared limitations.
+5. **[Printable resume](resume.html)** — current employment at Low Temp Industries, previous software QA experience at Pitney Bowes, tools, education and selected independent projects.
 
-Every project points to either a demonstration, a case study, or directly inspectable source code. Independent prototypes and synthetic test data are labeled as such; production deployment and business impact are not assumed.
+The site also includes ApartmentFinder, SentinelWatch, Vanessa Voice AI, VerityFlow, FluxPilot, ResolveIQ and AuditGuard. Independent prototypes and synthetic data are clearly labeled; professional employment and project work are not conflated.
 
 ## Architecture
 
-- [Homepage](index.html) — semantic HTML, responsive embedded CSS, contact links, and project visual previews; no external UI dependencies.
+- [Homepage](index.html) — recruiter pathways by role, four selected project case-study cards, accessible navigation and responsive layout; no external UI dependencies.
+- [Software QA evidence](qa.html) — documented testing approach, code and verification pointers.
+- [Meridian ERP case study](projects/meridian-erp.html) — practical workflow and limitations for business systems reviewers.
 - [Printable resume](resume.html) — professional experience and selected technical projects with a print-to-PDF option.
 - [Project case studies and demos](projects/)
 - [ApartmentFinder renter search](projects/apartmentfinder/) — sample affordability comparison **plus an optional RentCast provider listing feed**. The source's synthetic demo cards remain separate, and the authorized feed shows no provider listings until a private API key has been configured. See [integration setup](projects/apartmentfinder/RENTAL_DATA_SETUP.md).
