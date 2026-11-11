@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f4f7f8">
-<meta name="description" content="Esoham Abalo's portfolio of applied AI, voice agents, AI evaluation, quality assurance, manufacturing systems and workflow automation. Explore demos, source code and case studies.">
+<meta name="description" content="Esoham Abalo's software QA, manufacturing ERP, business systems, project delivery and applied AI portfolio. Review real test code, workflow case studies and independent prototypes.">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Esoham Abalo | Applied AI, QA & Business Systems">
-<meta property="og:description" content="Practical technology projects with working prototypes, source code and clearly documented evidence.">
+<meta property="og:title" content="Esoham Abalo | QA, ERP & Business Systems">
+<meta property="og:description" content="Software QA, manufacturing ERP, business systems and project-delivery evidence with inspectable code and candid project limitations.">
 <meta property="og:url" content="https://esoham.github.io/">
 <link rel="canonical" href="https://esoham.github.io/">
 <title>Esoham Abalo | Applied AI, QA & Business Systems</title>
@@ -38,7 +38,7 @@ h1 span{color:var(--teal)}.lead{font-size:1.12rem;color:var(--muted);line-height
 .section{padding:70px 0;border-top:1px solid var(--line)}.section-heading{max-width:775px;margin-bottom:29px}
 h2{font-size:clamp(1.8rem,3.4vw,2.55rem);letter-spacing:-.04em;line-height:1.2;margin:8px 0 13px}
 .section-heading p,.subcopy{color:var(--muted)}
-.featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
+.tracks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}.track{display:flex;flex-direction:column;background:white;border:1px solid var(--line);border-radius:15px;padding:25px}.track h3{font-size:1.24rem}.track p{flex:1;color:var(--muted);font-size:.95rem}.track a{font-weight:750}.proof{margin-top:16px;padding:14px 17px;border-left:4px solid var(--teal);background:#e8f5f1;border-radius:6px;color:#254851}.featured{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
 .feature{background:white;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
 .visual{min-height:194px;background:linear-gradient(120deg,#d5e9e5,#e5edf3);display:grid;place-items:center;overflow:hidden}
 .visual img{display:block;width:100%;max-height:290px;object-fit:cover}
@@ -64,8 +64,8 @@ h3{font-size:1.42rem;line-height:1.27;letter-spacing:-.025em;margin:0 0 12px}
 .small-note{font-size:.85rem;color:var(--muted);margin-top:22px}
 footer{background:var(--navy);color:#d7e7e7;padding:34px 0}
 footer .foot{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}footer a{color:#c6f6e7}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:35px}.quick{max-width:670px}.projects{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:680px){.container{width:min(100% - 34px,1160px)}.nav{padding:15px 0;align-items:flex-start;flex-direction:column;gap:12px}.links{gap:14px}.hero{padding:58px 0}.featured,.projects,.special,.about{grid-template-columns:1fr}.section{padding:52px 0}.special .details{border-left:0;border-top:1px solid #51717c;padding:20px 0 0}.feature-body{padding:22px}}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:35px}.quick{max-width:670px}.projects,.tracks{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.container{width:min(100% - 34px,1160px)}.nav{padding:15px 0;align-items:flex-start;flex-direction:column;gap:12px}.links{gap:14px}.hero{padding:58px 0}.tracks,.featured,.projects,.special,.about{grid-template-columns:1fr}.section{padding:52px 0}.special .details{border-left:0;border-top:1px solid #51717c;padding:20px 0 0}.feature-body{padding:22px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
@@ -73,29 +73,52 @@ footer .foot{display:flex;justify-content:space-between;align-items:center;flex-
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><nav class="container nav" aria-label="Primary navigation">
 <a class="brand" href="/" aria-label="Esoham Abalo — home"><span class="logo">EA</span><span>ESOHAM ABALO</span></a>
-<div class="links"><a href="#projects">Projects</a><a href="qa.html">QA Portfolio</a><a href="#evaluation">AI Evaluation</a><a href="#about">About</a><a href="resume.html">Resume</a><a href="#contact">Contact</a><a class="github" href="https://github.com/Esoham" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+<div class="links"><a href="#career-tracks">Role evidence</a><a href="#projects">Projects</a><a href="qa.html">QA Portfolio</a><a href="#evaluation">AI Evaluation</a><a href="#about">About</a><a href="resume.html">Resume</a><a href="#contact">Contact</a><a class="github" href="https://github.com/Esoham" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
 </nav></header>
 <main id="main">
 <section class="hero"><div class="container hero-grid">
 <div>
-<div class="eyebrow">Applied AI / Software Quality / Business Systems</div>
-<h1>Building technology that <span>solves operational problems.</span></h1>
-<p class="lead">I'm Esoham Abalo. I bring manufacturing ERP experience and a software QA background to projects in agentic AI, voice assistants, data quality, and automation. My work emphasizes evidence, testing, and keeping consequential decisions understandable to people.</p>
-<div class="actions"><a class="button primary" href="#projects">Explore selected projects ↘</a><a class="button secondary" href="qa.html">QA testing portfolio ↗</a><a class="button secondary" href="resume.html">View resume ↗</a><a class="button secondary" href="mailto:Esoham@yahoo.com?subject=Portfolio%20inquiry">Email me ↗</a></div>
+<div class="eyebrow">Software QA / Manufacturing ERP / Business Systems</div>
+<h1>Making complex workflows <span>clearer, testable, and reliable.</span></h1>
+<p class="lead">I’m Esoham Abalo, an Atlanta-based operations and technology professional. My background combines software QA testing at Pitney Bowes with Infor ERP and inventory validation at Low Temp Industries. I turn workflow problems into documented requirements, tested prototypes and traceable decisions.</p>
+<div class="actions"><a class="button primary" href="#career-tracks">See evidence by role ↘</a><a class="button secondary" href="qa.html">QA testing ↗</a><a class="button secondary" href="projects/meridian-erp.html">ERP case study ↗</a><a class="button secondary" href="resume.html">Resume ↗</a></div><p class="proof"><strong>Professional work:</strong> Infor ERP reconciliation, cross-team issue resolution and software testing. <strong>Independent projects:</strong> QA automation, manufacturing ERP, product workflows and applied AI.</p>
 </div>
 <aside class="quick" aria-label="Choose a portfolio review path">
-<h2>Have two minutes?</h2>
-<p>Choose the evidence most relevant to your role.</p>
-<a href="projects/changeguard.html">AI workflows & evaluation ↗</a>
-<a href="projects/vanessa-ai.html">Voice AI & full-stack apps ↗</a>
-<a href="https://github.com/Esoham/Esoham/blob/main/AI_EVALUATION_WORK_SAMPLE.md">Model response rating sample ↗</a>
-<a href="qa.html">Software QA test evidence ↗</a><a href="projects/sentinelwatch-console.html">Cybersecurity demo ↗</a><a href="resume.html">Resume & experience ↗</a>
+<h2>Recruiter quick review</h2>
+<p>Select the work that best matches the position.</p>
+<a href="qa.html">Software QA: test cases, regression &amp; automation ↗</a>
+<a href="projects/meridian-erp.html">ERP &amp; business systems: end-to-end workflow ↗</a>
+<a href="projects/merchantflow/">Product &amp; project delivery: interactive demo ↗</a>
+<a href="projects/changeguard.html">AI workflows: evidence &amp; review gates ↗</a>
+<a href="resume.html">Professional experience &amp; printable resume ↗</a>
 </aside>
 </div></section>
+<section id="career-tracks" class="section"><div class="container">
+<div class="section-heading"><div class="eyebrow">01 / What I can contribute</div><h2>Different roles, one consistent approach.</h2><p>My professional experience and independent work connect quality, business processes and technical delivery. Choose a path to inspect the evidence—not just a list of technologies.</p></div>
+<div class="tracks">
+<article class="track"><div class="label">Software testing &amp; quality</div><h3>QA Analyst / Junior QA Engineer</h3><p>Functional, regression and UAT experience from Pitney Bowes, supported by independent Playwright, Selenium and pytest suites, API checks and documented test strategy.</p><a href="qa.html">Inspect QA work &amp; test evidence ↗</a></article>
+<article class="track"><div class="label">Enterprise systems &amp; data quality</div><h3>ERP / Business Systems Analyst</h3><p>Infor ERP job-order and material reconciliations in manufacturing, plus an independently built FastAPI/SQLite ERP workflow with audit trails and quality gates.</p><a href="projects/meridian-erp.html">Review Meridian ERP case study ↗</a></article>
+<article class="track"><div class="label">Project &amp; product operations</div><h3>Project Coordinator / Product Operations</h3><p>Cross-team issue coordination, requirements thinking, Agile artifacts, prioritized backlogs, acceptance criteria and a tested fulfillment-triage prototype.</p><a href="https://github.com/Esoham/merchantflow/blob/main/docs/PRD.md">Read MerchantFlow requirements ↗</a></article>
+</div><p class="small-note">Role titles describe work areas this portfolio supports, not claimed past job titles or professional certifications.</p>
+</div></section>
 <section id="projects" class="section"><div class="container">
-<div class="section-heading"><div class="eyebrow">01 / Flagship work</div><h2>Two projects that tell my story.</h2>
-<p>Real operational questions translated into inspectable software prototypes. Each includes a clear problem, implementation details, and known limitations.</p></div>
+<div class="section-heading"><div class="eyebrow">02 / Selected work</div><h2>From testing a workflow to building the system behind it.</h2>
+<p>Four selected projects across QA, enterprise operations and software. Each links to inspectable implementation and honest scope notes.</p></div>
 <div class="featured">
+<article class="feature">
+<div class="visual text-visual"><strong>CommerceQA</strong><small>UI + API regression / evidence and defect analysis</small></div>
+<div class="feature-body"><div class="label">Software QA · Test automation</div><h3>CommerceQA / FarmFresh</h3>
+<p>Independent QA lab for a fictional industrial catalog: Playwright browser journeys, Selenium Page Objects, pytest API contracts, negative and boundary tests, plus CI configuration and recorded verification limitations.</p>
+<div class="tags"><span>Playwright</span><span>pytest</span><span>Postman/API</span><span>GitHub Actions</span></div>
+<div class="cardlinks"><a href="qa.html">QA case studies ↗</a><a href="https://github.com/Esoham/QA-Automation-Project">Test code &amp; artifacts ↗</a></div>
+</div></article>
+<article class="feature">
+<div class="visual text-visual"><strong>Meridian ERP</strong><small>PO → stock → BOM → work order → quality review</small></div>
+<div class="feature-body"><div class="label">Manufacturing ERP · Business systems</div><h3>Meridian ERP</h3>
+<p>Local FastAPI and SQLite manufacturing workspace with supplier purchasing, inventory movements, revision-controlled BOMs, production routing, quality holds and ledger/audit review. Uses fictional data, not employer systems.</p>
+<div class="tags"><span>FastAPI</span><span>SQLite</span><span>Manufacturing workflows</span><span>QA controls</span></div>
+<div class="cardlinks"><a href="projects/meridian-erp.html">ERP case study ↗</a><a href="https://github.com/Esoham/Meridian-ERP">Code &amp; regression tests ↗</a></div>
+</div></article>
 <article class="feature">
 <div class="visual"><img src="assets/changeguard-preview.svg" alt="Illustrated preview of a manufacturing change review showing a HOLD decision" loading="lazy"></div>
 <div class="feature-body"><div class="label">Agentic AI · Manufacturing systems</div><h3>ChangeGuard MFG</h3>
@@ -112,7 +135,7 @@ footer .foot{display:flex;justify-content:space-between;align-items:center;flex-
 </div></article>
 </div></div></section>
 <section class="section" id="more"><div class="container">
-<div class="section-heading"><div class="eyebrow">02 / More projects</div><h2>Explore, test, inspect.</h2>
+<div class="section-heading"><div class="eyebrow">03 / More projects</div><h2>Explore, test, inspect.</h2>
 <p>A focused set of prototypes across operations intelligence, QA, and cybersecurity. Each card links to a demo or evidence you can inspect.</p></div>
 <div class="projects">
 <article class="project"><div class="label">Housing technology · Renter affordability</div><h3>ApartmentFinder</h3><p>Interactive apartment-search prototype with city and ZIP filters, rent and move-in budget checks, saved examples, and transparent cost comparisons. All listings are fictional.</p><div class="cardlinks"><a href="projects/apartmentfinder/">Try sample demo ↗</a><a href="https://github.com/Esoham/ApartmentFinder">Source & test plan ↗</a></div></article>
@@ -127,19 +150,19 @@ footer .foot{display:flex;justify-content:space-between;align-items:center;flex-
 </div></section>
 <section class="section" id="evaluation"><div class="container">
 <div class="special">
-<div><div class="eyebrow">03 / AI Generalist & Evaluation</div><h2>Beyond building AI: checking what it says and does.</h2>
+<div><div class="eyebrow">04 / AI Generalist & Evaluation</div><h2>Beyond building AI: checking what it says and does.</h2>
 <p>Model evaluations need clear rubrics, source-grounded reasoning, edge cases, honest uncertainty, and defensible decisions. I've documented an example grading exercise alongside applied AI project evidence, so reviewers can see both my method and its limitations.</p>
 <div class="actions"><a class="button" href="https://github.com/Esoham/Esoham/blob/main/AI_EVALUATION_WORK_SAMPLE.md">Read evaluation sample ↗</a><a class="button secondary" style="color:white;border-color:#afccd2" href="https://github.com/Esoham/Esoham/blob/main/AI_GENERALIST_EVIDENCE.md">AI skills evidence map ↗</a></div></div>
 <div class="details"><p><strong>Example evidence</strong><br>Rubric scoring, factual grounding, safety judgment, and error labels.</p><p><strong>Project evidence</strong><br>ChangeGuard agent contracts, synthetic evaluations, and documented human review.</p><p><strong>Transparency</strong><br>The rating sample is illustrative, not paid labeling work or a production benchmark.</p></div>
 </div></div></section>
 <section id="about" class="section"><div class="container">
-<div class="section-heading"><div class="eyebrow">04 / Background</div><h2>Operational context meets technical execution.</h2></div>
+<div class="section-heading"><div class="eyebrow">05 / Background</div><h2>Operational context meets technical execution.</h2></div>
 <div class="about">
 <div class="panel"><h3>Professional experience</h3><p>At Low Temp Industries, I support manufacturing inventory and Infor ERP workflows, analyze material and job-order discrepancies, and coordinate with production, engineering, receiving, and purchasing. My earlier QA work at Pitney Bowes involved software testing, defect tracking, and validation.</p></div>
 <div class="panel"><h3>Technical foundation</h3><p>Georgia State University: Bachelor of Interdisciplinary Studies with an Information Systems concentration; Associate of Science in Computer Science from Perimeter College. My projects use Python, JavaScript, SQL, C#, React, Node.js, testing tools, and defensive security lab workflows.</p></div>
 <div class="panel" style="margin-top:22px"><h3>Explore the professional resume</h3><p>A recruiter-friendly overview of professional experience, technical tools, and selected projects. <a href="resume.html">Open resume and print to PDF ↗</a></p></div>
 </div></section>
-<section id="contact" class="section"><div class="container"><div class="section-heading"><div class="eyebrow">05 / Connect</div><h2>Want to discuss a role or project?</h2><p>For hiring conversations, technical collaboration, or questions about the work shown here, email me directly or inspect the project repositories.</p></div><div class="actions"><a class="button primary" href="mailto:Esoham@yahoo.com?subject=Portfolio%20inquiry">Email Esoham ↗</a><a class="button secondary" href="resume.html">View resume ↗</a><a class="button secondary" href="https://github.com/Esoham">GitHub ↗</a></div><p class="small-note">Contact: <a href="mailto:Esoham@yahoo.com">Esoham@yahoo.com</a> · Atlanta, GA</p></div></section>
+<section id="contact" class="section"><div class="container"><div class="section-heading"><div class="eyebrow">06 / Connect</div><h2>Want to discuss a role or project?</h2><p>For hiring conversations, technical collaboration, or questions about the work shown here, email me directly or inspect the project repositories.</p></div><div class="actions"><a class="button primary" href="mailto:Esoham@yahoo.com?subject=Portfolio%20inquiry">Email Esoham ↗</a><a class="button secondary" href="resume.html">View resume ↗</a><a class="button secondary" href="https://github.com/Esoham">GitHub ↗</a></div><p class="small-note">Contact: <a href="mailto:Esoham@yahoo.com">Esoham@yahoo.com</a> · Atlanta, GA</p></div></section>
 </main>
-<footer><div class="container foot"><div><strong>Esoham Abalo</strong><div>Applied AI · QA · Business Systems</div></div><div><a href="https://github.com/Esoham">GitHub</a> · <a href="#projects">Projects</a> · <a href="resume.html">Resume</a> · <a href="#contact">Contact</a></div><div>© 2026 · Independent portfolio</div></div></footer>
+<footer><div class="container foot"><div><strong>Esoham Abalo</strong><div>Software QA · ERP · Business Systems</div></div><div><a href="https://github.com/Esoham">GitHub</a> · <a href="#projects">Projects</a> · <a href="resume.html">Resume</a> · <a href="#contact">Contact</a></div><div>© 2026 · Independent portfolio</div></div></footer>
 </body></html>
